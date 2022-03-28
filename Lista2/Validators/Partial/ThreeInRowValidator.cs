@@ -28,10 +28,10 @@ namespace Lista2.Validators
             for (int column = 0; column < _size; column++)
             {
                 int inRow = 0;
-                int? lastValue = null;
+                bool? lastValue = null;
                 for (int row = 0; row < _size; row++)
                 {
-                    var currentValue = state[row, column];
+                    var currentValue = state[row, column].Value;
                     // currentValue is not assigned
                     if (!currentValue.HasValue)
                     {
@@ -67,10 +67,10 @@ namespace Lista2.Validators
             for (int row = 0; row < _size; row++)
             {
                 int inRow = 0;
-                int? lastValue = null;
+                bool? lastValue = null;
                 for (int column = 0; column < _size; column++)
                 {
-                    var currentValue = state[row, column];
+                    var currentValue = state[row, column].Value;
                     // currentValue is not assigned
                     if (!currentValue.HasValue)
                     {

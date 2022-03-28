@@ -18,7 +18,7 @@ namespace Lista2.Validators
             {
                 for (int column = 0; column < _size; column++)
                 {
-                    if (!state[row, column].HasValue)
+                    if (!state[row, column].Value.HasValue)
                     {
                         return false;
                     }

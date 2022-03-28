@@ -17,7 +17,7 @@ namespace Lista2.Validators
             int firstRowCount = 0;
             for (int column = 0; column < _size; column++)
             {
-                if (state[0, column] == 1)
+                if (state[0, column].Value == true)
                 {
                     firstRowCount++;
                 }
@@ -33,7 +33,7 @@ namespace Lista2.Validators
                 int rowCount = 0;
                 for (int column = 0; column < _size; column++)
                 {
-                    if (state[row, column] == 1)
+                    if (state[row, column].Value == true)
                     {
                         rowCount++;
                     }
@@ -53,7 +53,7 @@ namespace Lista2.Validators
                 int columnCount = 0;
                 for (int row = 0; row < _size; row++)
                 {
-                    if (state[row, column] == 1)
+                    if (state[row, column].Value == true)
                     {
                         columnCount++;
                     }

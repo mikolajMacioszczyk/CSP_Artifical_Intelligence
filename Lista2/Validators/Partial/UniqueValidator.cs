@@ -30,7 +30,7 @@ namespace Lista2.Validators
             {
                 for (int column = 0; column < _size; column++)
                 {
-                    var x = state[row, column];
+                    var x = state[row, column].Value;
                     if (x.HasValue)
                     {
                         sb.Append(x.Value);
@@ -60,7 +60,7 @@ namespace Lista2.Validators
             {
                 for (int row = 0; row < _size; row++)
                 {
-                    var x = state[row, column];
+                    var x = state[row, column].Value;
                     if (x.HasValue)
                     {
                         sb.Append(x.Value);
