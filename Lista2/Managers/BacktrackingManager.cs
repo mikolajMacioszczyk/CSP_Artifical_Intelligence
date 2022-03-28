@@ -1,10 +1,5 @@
 ﻿using Lista2.Interfaces;
 using Lista2.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lista2.Managers
 {
@@ -14,9 +9,11 @@ namespace Lista2.Managers
         private List<IFullBinaryValidator> fullValidators = new List<IFullBinaryValidator>();
         private List<IPartialBinaryValidator> partialValidators = new List<IPartialBinaryValidator>();
 
-        public List<BinaryState> Process(BinaryState variables)
+        public List<BinaryState> Process(BinaryState currentState)
         {
-            throw new NotImplementedException();
+            var successStates = new List<BinaryState>();
+            Process(currentState, 0, 0, successStates);
+            return successStates;
         }
 
         private void Process(BinaryState currentState, int x, int y, List<BinaryState> successStates)

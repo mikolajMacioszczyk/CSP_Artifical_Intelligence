@@ -12,7 +12,7 @@
             {
                 for (int j = 0; j < size; j++)
                 {
-                    Matrix[i, j] = new BinaryUnit;
+                    Matrix[i, j] = new BinaryUnit();
                 }
             }
             Size = size;
