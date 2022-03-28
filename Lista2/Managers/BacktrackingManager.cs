@@ -23,6 +23,7 @@ namespace Lista2.Managers
             {
                 if (fullValidators.All(f => f.Validate(currentState)))
                 {
+                    Console.WriteLine("Soultion found!");
                     // if validation succeded then match
                     successStates.Add(currentState);
                 } 
@@ -37,17 +38,28 @@ namespace Lista2.Managers
             {
                 // draw value
                 currentState[x, y].Value = Random.Next(2) > 0 ? true : false;
-                
-                if (partialValidators.Any(f => !f.Validate(currentState)))
+            }
+
+            var (newX, newY) = GetNextCoordinates(currentState.Size, x, y);
+
+            // process next
+            if (partialValidators.All(f => f.Validate(currentState)))
+            {
+                Process(currentState, newX, newY, successStates);
+            }
+
+            if (!currentState[x, y].IsHardcoded)
+            {
+                // toggle value
+                currentState[x, y].Value = !currentState[x, y].Value;
+
+                if (partialValidators.All(f => f.Validate(currentState)))
                 {
-                    // if constraint is not satisfied then go back
-                    return;
+                    Process(currentState, newX, newY, successStates);
                 }
             }
 
-            // process next
-            var (newX, newY) = GetNextCoordinates(currentState.Size, x, y);
-            Process(currentState, x, y, successStates);
+            currentState[x, y].Value = null;
         }
 
         private (int, int) GetNextCoordinates(int size, int x, int y)
