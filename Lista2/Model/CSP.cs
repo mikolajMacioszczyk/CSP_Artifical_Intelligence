@@ -1,13 +1,13 @@
 ﻿namespace Lista2.Model
 {
-    public abstract class CSP<V, D>
+    public class CSP<V, D>
     {
         public List<V> Variables { get; set; }
 
         public Dictionary<V, List<D>> Domains { get; set; }
         public Dictionary<V, List<Constraint<V, D>>> Constraints { get; set; }
 
-        protected CSP(
+        public CSP(
             List<V> variables, 
             Dictionary<V, List<D>> domains)
         {
@@ -55,7 +55,7 @@
             {
                 // TODO: Do not copy
                 var local_assignment = new Dictionary<V, D>(assignments);
-                assignments.Add(first, value);
+                local_assignment.Add(first, value);
 
                 if (Consistent(first, local_assignment))
                 {
