@@ -9,13 +9,12 @@ namespace Lista2.Managers
         public List<Field> Variables { get; private set; } = new List<Field>();
         public Dictionary<Field, List<int>> Domains { get; private set; } = new();
 
-
-        public Binary(int size)
+        public Binary(int size, List<FieldHardcodedValue> hardcodedValues)
         {
             Size = size;
 
             InitializeVariables();
-            InitializeDomains();
+            InitializeDomains(hardcodedValues);
 
             csp = new CSP<Field, int>(Variables, Domains);
 
@@ -38,73 +37,33 @@ namespace Lista2.Managers
             }
         }
 
-        private void InitializeDomains()
+        private void InitializeDomains(List<FieldHardcodedValue> hardcodedValues)
         {
             foreach (var variable in Variables)
             {
                 Domains.Add(variable, new List<int> { 0, 1 });
             }
 
-            var constant_0_0 = Variables.First(v => v.Row == 0 && v.Column == 0);
-            Domains[constant_0_0] = new List<int> { 1 };
-
-            var constant_0_3 = Variables.First(v => v.Row == 0 && v.Column == 3);
-            Domains[constant_0_3] = new List<int> { 0 };
-
-            var constant_1_2 = Variables.First(v => v.Row == 1 && v.Column == 2);
-            Domains[constant_1_2] = new List<int> { 0 };
-
-            var constant_1_3 = Variables.First(v => v.Row == 1 && v.Column == 3);
-            Domains[constant_1_3] = new List<int> { 0 };
-
-            var constant_1_5 = Variables.First(v => v.Row == 1 && v.Column == 5);
-            Domains[constant_1_5] = new List<int> { 1 };
-
-            var constant_2_1 = Variables.First(v => v.Row == 2 && v.Column == 1);
-            Domains[constant_2_1] = new List<int> { 0 };
-
-            var constant_2_2 = Variables.First(v => v.Row == 2 && v.Column == 2);
-            Domains[constant_2_2] = new List<int> { 0 };
-
-            var constant_2_5 = Variables.First(v => v.Row == 2 && v.Column == 5);
-            Domains[constant_2_5] = new List<int> { 1 };
-
-            var constant_4_0 = Variables.First(v => v.Row == 4 && v.Column == 0);
-            Domains[constant_4_0] = new List<int> { 0 };
-
-            var constant_4_1 = Variables.First(v => v.Row == 4 && v.Column == 1);
-            Domains[constant_4_1] = new List<int> { 0 };
-
-            var constant_4_3 = Variables.First(v => v.Row == 4 && v.Column == 3);
-            Domains[constant_4_3] = new List<int> { 1 };
-
-            var constant_5_1 = Variables.First(v => v.Row == 5 && v.Column == 1);
-            Domains[constant_5_1] = new List<int> { 1 };
-
-            var constant_5_4 = Variables.First(v => v.Row == 5 && v.Column == 4);
-            Domains[constant_5_4] = new List<int> { 0 };
-
-            var constant_5_5 = Variables.First(v => v.Row == 5 && v.Column == 5);
-            Domains[constant_5_5] = new List<int> { 0 };
+            foreach (var hardcodedValue in hardcodedValues)
+            {
+                var variable = Variables.First(v => v.Row == hardcodedValue.Row && v.Column == hardcodedValue.Column);
+                Domains[variable] = new List<int> { hardcodedValue.Value };
+            }
         }
 
         private void AddConstraints()
         {
             // equal row count constraint
-            csp.AddConstraint(new EqualCountConstraint(Variables.Where(v => v.Row == 0).ToList()));
-            csp.AddConstraint(new EqualCountConstraint(Variables.Where(v => v.Row == 1).ToList()));
-            csp.AddConstraint(new EqualCountConstraint(Variables.Where(v => v.Row == 2).ToList()));
-            csp.AddConstraint(new EqualCountConstraint(Variables.Where(v => v.Row == 3).ToList()));
-            csp.AddConstraint(new EqualCountConstraint(Variables.Where(v => v.Row == 4).ToList()));
-            csp.AddConstraint(new EqualCountConstraint(Variables.Where(v => v.Row == 5).ToList()));
+            for (int i = 0; i < Size; i++)
+            {
+                csp.AddConstraint(new EqualCountConstraint(Variables.Where(v => v.Row == i).ToList()));
+            }
 
             // equal column count constraint
-            csp.AddConstraint(new EqualCountConstraint(Variables.Where(v => v.Column == 0).ToList()));
-            csp.AddConstraint(new EqualCountConstraint(Variables.Where(v => v.Column == 1).ToList()));
-            csp.AddConstraint(new EqualCountConstraint(Variables.Where(v => v.Column == 2).ToList()));
-            csp.AddConstraint(new EqualCountConstraint(Variables.Where(v => v.Column == 3).ToList()));
-            csp.AddConstraint(new EqualCountConstraint(Variables.Where(v => v.Column == 4).ToList()));
-            csp.AddConstraint(new EqualCountConstraint(Variables.Where(v => v.Column == 5).ToList()));
+            for (int i = 0; i < Size; i++)
+            {
+                csp.AddConstraint(new EqualCountConstraint(Variables.Where(v => v.Column == i).ToList()));
+            }
 
             // rows
             for (int i = 0; i < Size; i++)

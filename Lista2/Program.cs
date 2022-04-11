@@ -4,7 +4,24 @@ using Lista2.Model;
 
 int size = 6;
 
-var binary = new Binary(size);
+var hardcodedValues = new List<FieldHardcodedValue> { 
+    new FieldHardcodedValue { Row = 0, Column = 0, Value = 1 },
+    new FieldHardcodedValue { Row = 0, Column = 3, Value = 0 },
+    new FieldHardcodedValue { Row = 1, Column = 2, Value = 0 },
+    new FieldHardcodedValue { Row = 1, Column = 3, Value = 0 },
+    new FieldHardcodedValue { Row = 1, Column = 5, Value = 1 },
+    new FieldHardcodedValue { Row = 2, Column = 1, Value = 0 },
+    new FieldHardcodedValue { Row = 2, Column = 2, Value = 0 },
+    new FieldHardcodedValue { Row = 2, Column = 5, Value = 1 },
+    new FieldHardcodedValue { Row = 4, Column = 0, Value = 0 },
+    new FieldHardcodedValue { Row = 4, Column = 1, Value = 0 },
+    new FieldHardcodedValue { Row = 4, Column = 3, Value = 1 },
+    new FieldHardcodedValue { Row = 5, Column = 1, Value = 1 },
+    new FieldHardcodedValue { Row = 5, Column = 4, Value = 0 },
+    new FieldHardcodedValue { Row = 5, Column = 5, Value = 0 },
+};
+
+var binary = new Binary(size, hardcodedValues);
 
 var solution = binary.Solve();
 if (solution is null)
