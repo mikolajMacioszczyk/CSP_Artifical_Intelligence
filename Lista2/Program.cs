@@ -2,9 +2,11 @@
 using Lista2.Model;
 
 var variables = new List<Field>();
-for (int i = 0; i < 6; i++)
+int size = 6;
+
+for (int i = 0; i < size; i++)
 {
-    for (int j = 0; j < 6; j++)
+    for (int j = 0; j < size; j++)
     {
         variables.Add(new Field() { Row = i, Column = j });
     }
@@ -76,6 +78,33 @@ csp.AddConstraint(new EqualCountConstraint(variables.Where(v => v.Column == 3).T
 csp.AddConstraint(new EqualCountConstraint(variables.Where(v => v.Column == 4).ToList()));
 csp.AddConstraint(new EqualCountConstraint(variables.Where(v => v.Column == 5).ToList()));
 
+// rows
+for (int i = 0; i < size; i++)
+{
+    for (int j = 0; j < size - 3; j++)
+    {
+        var variable1 = variables[i * size + j];
+        var variable2 = variables[i * size + j + 1];
+        var variable3 = variables[i * size + j + 2];
+        csp.AddConstraint(new NotSameInRowConstraint(new List<Field> { variable1, variable2, variable3}));
+    }
+}
+
+// columns
+for (int column = 0; column < size; column++)
+{
+    for (int row = 0; row < size - 3; row++)
+    {
+        var variable1 = variables[row * size + column];
+        var variable2 = variables[(row + 1) * size + column];
+        var variable3 = variables[(row + 2) * size + column];
+        csp.AddConstraint(new NotSameInRowConstraint(new List<Field> { variable1, variable2, variable3 }));
+    }
+}
+
+//unique
+csp.AddConstraint(new UniqueConstraint(variables, size));
+
 var solution = csp.Backtracking(new Dictionary<Field, int>());
 if (solution is null)
 {
@@ -84,8 +113,14 @@ if (solution is null)
 else
 {
     Console.WriteLine("Solution found!");
-    foreach (var item in solution.Keys)
+    for (int i = 0; i < size; i++)
     {
-        Console.WriteLine($"{item}: {solution[item]}");
+        for (int j = 0; j < size; j++)
+        {
+            var variable = variables[i * size + j];
+            int value = solution[variable];
+            Console.Write($" {value} |");
+        }
+        Console.WriteLine();
     }
 }

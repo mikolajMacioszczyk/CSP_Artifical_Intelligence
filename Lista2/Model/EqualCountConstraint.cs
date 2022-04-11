@@ -3,9 +3,7 @@
     public class EqualCountConstraint : Constraint<Field, int>
     {
         public EqualCountConstraint(List<Field> variables) : base(variables)
-        {
-
-        }
+        {}
 
         public override bool IsStisfied(Dictionary<Field, int> assignement)
         {
