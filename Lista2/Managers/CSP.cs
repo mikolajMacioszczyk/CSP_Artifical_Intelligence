@@ -1,4 +1,6 @@
-﻿namespace Lista2.Model
+﻿using Lista2.Model;
+
+namespace Lista2.Managers
 {
     public class CSP<V, D>
     {
@@ -8,12 +10,12 @@
         public Dictionary<V, List<Constraint<V, D>>> Constraints { get; set; }
 
         public CSP(
-            List<V> variables, 
+            List<V> variables,
             Dictionary<V, List<D>> domains)
         {
             Variables = variables;
             Domains = domains;
-            Constraints = new ();
+            Constraints = new();
             foreach (var variable in Variables)
             {
                 Constraints.Add(variable, new List<Constraint<V, D>>());
