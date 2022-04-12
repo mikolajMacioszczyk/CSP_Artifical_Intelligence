@@ -40,7 +40,7 @@ namespace Lista2.Managers
 
         private void InitializeDomains(List<FieldHardcodedValue> hardcodedValues)
         {
-            var fullDomain = Enumerable.Range(0, Size);
+            var fullDomain = Enumerable.Range(1, Size);
 
             foreach (var variable in Variables)
             {
