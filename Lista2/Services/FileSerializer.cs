@@ -46,7 +46,7 @@ namespace Lista2.Services
             return new Binary(lines.Count, hardcodedValues);
         }
 
-        public string SaveToFile(List<List<int>> solution, string fileName)
+        public string SaveBinaryToFile(List<List<int>> solution, string fileName)
         {
             string resultFileName = $"{fileName}_{Guid.NewGuid()}";
             var path = GetOutputFilePath(resultFileName);
@@ -69,7 +69,7 @@ namespace Lista2.Services
 
         #endregion
 
-
+        #region Futoshiki
         public Futoshiki ReadFutoshiki(string fileName)
         {
             var path = GetInputFilePath(fileName);
@@ -101,13 +101,13 @@ namespace Lista2.Services
                             // is in row with numbers
                             if (row % 2 == 0)
                             {
-                                inequalities.Add (new InequalityConstraintModel 
-                                { 
-                                    Variable1Row = row / 2, 
+                                inequalities.Add(new InequalityConstraintModel
+                                {
+                                    Variable1Row = row / 2,
                                     Variable1Column = (column - 1) / 2,
                                     Variable2Row = row / 2,
                                     Variable2Column = (column + 1) / 2,
-                                    Operator = line[column] == '>' ? Enums.InequalityOperator.GreaterThan : Enums.InequalityOperator.LessThan 
+                                    Operator = line[column] == '>' ? Enums.InequalityOperator.GreaterThan : Enums.InequalityOperator.LessThan
                                 });
                             }
                             // is in row with constraints
@@ -138,9 +138,53 @@ namespace Lista2.Services
                 }
             }
 
-            return new Futoshiki(lines.Count, hardcodedValues, inequalities);
+            return new Futoshiki((lines.Count + 1) / 2, hardcodedValues, inequalities);
         }
-    
+
+        public string SaveFutoshikiToFile(List<List<int>> solution, List<InequalityConstraintModel> inequalities, string fileName)
+        {
+            string resultFileName = $"{fileName}_{Guid.NewGuid()}";
+            var path = GetOutputFilePath(resultFileName);
+
+            var lines = new List<string>();
+            for (int row = 0; row < solution.Count; row++)
+            {
+                var sb = new StringBuilder();
+                for (int column = 0; column < solution[row].Count; column++)
+                {
+                    sb.Append($" {solution[row][column]} |");
+                    
+                    // Constraint within row
+                    var constraint = inequalities.FirstOrDefault(i => i.Variable1Row == row && i.Variable1Column == column
+                                                        && i.Variable2Row == row && i.Variable2Column == column + 1);
+                    if (constraint is null)
+                    {
+                        sb.Append($" - |");
+                    }
+                    else if (constraint.Operator == Enums.InequalityOperator.GreaterThan)
+                    {
+                        sb.Append($" > |");
+                    }
+                    else if (constraint.Operator == Enums.InequalityOperator.LessThan)
+                    {
+                        sb.Append($" < |");
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"Unhandled operator {constraint.Operator}");
+                    }
+                }
+                lines.Add(sb.ToString());
+            }
+
+            File.WriteAllLines(path, lines);
+
+            return resultFileName;
+        }
+
+        #endregion
+
+        #region Helpers
         private string GetInputFilePath(string fileName)
         {
             var root = GetBaseFilePath();
@@ -153,7 +197,9 @@ namespace Lista2.Services
             return Path.Combine(root, "Output", fileName);
         }
 
-        private string GetBaseFilePath() => 
+        private string GetBaseFilePath() =>
             Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName;
+
+        #endregion
     }
 }

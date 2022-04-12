@@ -33,7 +33,7 @@ foreach (var binaryInput in binaryInputs)
             lines.Add(line);
             Console.WriteLine();
         }
-        Console.WriteLine($"Stored result in {fileSerializer.SaveToFile(lines, binaryInput)}");
+        Console.WriteLine($"Stored result in {fileSerializer.SaveBinaryToFile(lines, binaryInput)}");
     }
     Console.WriteLine();
 }
@@ -53,16 +53,21 @@ foreach (var input in futoshikiInputs)
     else
     {
         Console.WriteLine($"Solution found for problem {input}!");
+        var lines = new List<List<int>>();
         for (int i = 0; i < futhosiki.Size; i++)
         {
+            var line = new List<int>();
             for (int j = 0; j < futhosiki.Size; j++)
             {
                 var variable = futhosiki.Variables[i * futhosiki.Size + j];
                 int value = futhosikiSolution[variable];
+                line.Add(value);
                 Console.Write($" {value} |");
             }
+            lines.Add(line);
             Console.WriteLine();
         }
+        Console.WriteLine($"Stored result in {fileSerializer.SaveFutoshikiToFile(lines, futhosiki.Inequalities, input)}");
     }
 }
 

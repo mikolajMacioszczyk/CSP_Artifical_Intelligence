@@ -8,11 +8,13 @@ namespace Lista2.Managers
         public int Size { get; set; }
         public List<Field> Variables { get; private set; } = new List<Field>();
         public Dictionary<Field, List<int>> Domains { get; private set; } = new();
+        public List<InequalityConstraintModel> Inequalities { get; set; }
 
         public Futoshiki(int size, List<FieldHardcodedValue> hardcodedValues, 
             List<InequalityConstraintModel> inequalityConstraints)
         {
             Size = size;
+            Inequalities = inequalityConstraints;
 
             InitializeVariables();
             InitializeDomains(hardcodedValues);
