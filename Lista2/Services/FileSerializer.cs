@@ -150,6 +150,11 @@ namespace Lista2.Services
             for (int row = 0; row < solution.Count; row++)
             {
                 var sb = new StringBuilder();
+                var constraintSb = new StringBuilder();
+
+                // Constraints within column
+                var columnConstraints = inequalities.Where(i => i.Variable1Row == row && i.Variable2Row == row + 1).ToList();
+
                 for (int column = 0; column < solution[row].Count; column++)
                 {
                     sb.Append($" {solution[row][column]} |");
@@ -173,8 +178,31 @@ namespace Lista2.Services
                     {
                         throw new ArgumentException($"Unhandled operator {constraint.Operator}");
                     }
+
+                    var columnConstraint = columnConstraints.FirstOrDefault(c => c.Variable1Column == column && c.Variable2Column == column);
+                    if (columnConstraint is null)
+                    {
+                        constraintSb.Append(" -  ");
+                    }
+                    else if (columnConstraint.Operator == Enums.InequalityOperator.GreaterThan)
+                    {
+                        constraintSb.Append($" >  ");
+                    }
+                    else if (columnConstraint.Operator == Enums.InequalityOperator.LessThan)
+                    {
+                        constraintSb.Append($" <  ");
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"Unhandled operator {columnConstraint.Operator}");
+                    }
+                    constraintSb.Append(" -  ");
                 }
                 lines.Add(sb.ToString());
+                if (row != solution.Count - 1)
+                {
+                    lines.Add(constraintSb.ToString());
+                }
             }
 
             File.WriteAllLines(path, lines);
