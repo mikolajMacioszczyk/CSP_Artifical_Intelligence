@@ -4,7 +4,8 @@ using Lista2.Model;
 using Lista2.Services;
 
 var fileSerializer = new FileSerializer();
-var binaryInputs = new string[] { "binary_6x6", "binary_8x8", "binary_10x10" };
+//var binaryInputs = new string[] { "binary_6x6", "binary_8x8", "binary_10x10" };
+var binaryInputs = new string[] { };
 
 foreach (var binaryInput in binaryInputs)
 {
@@ -32,48 +33,33 @@ foreach (var binaryInput in binaryInputs)
     Console.WriteLine();
 }
 
-int futhoshikiSize = 4;
+var futoshikiInputs = new string[] { "futoshiki_4x4", "futoshiki_5x5", "futoshiki_6x6" };
 
-var futhoshikiHardcodedValues = new List<FieldHardcodedValue>()
+foreach (var input in futoshikiInputs)
 {
-    new FieldHardcodedValue {Row = 0, Column = 2, Value = 3},
-    new FieldHardcodedValue {Row = 1, Column = 1, Value = 3},
-    new FieldHardcodedValue {Row = 3, Column = 3, Value = 3},
-};
+    var futhosiki = fileSerializer.ReadFutoshiki(input);
 
-var futhoshikiInequalities = new List<InequalityConstraintModel>()
-{
-    new InequalityConstraintModel {Variable1Row = 1, Variable1Column = 0, Variable2Row = 2, Variable2Column = 0, Operator = Lista2.Enums.InequalityOperator.GreaterThan},
-    new InequalityConstraintModel {Variable1Row = 1, Variable1Column = 1, Variable2Row = 2, Variable2Column = 1, Operator = Lista2.Enums.InequalityOperator.LessThan},
-    new InequalityConstraintModel {Variable1Row = 1, Variable1Column = 2, Variable2Row = 2, Variable2Column = 2, Operator = Lista2.Enums.InequalityOperator.GreaterThan},
-    new InequalityConstraintModel {Variable1Row = 2, Variable1Column = 0, Variable2Row = 3, Variable2Column = 0, Operator = Lista2.Enums.InequalityOperator.GreaterThan},
-    new InequalityConstraintModel {Variable1Row = 3, Variable1Column = 0, Variable2Row = 3, Variable2Column = 1, Operator = Lista2.Enums.InequalityOperator.GreaterThan},
-    new InequalityConstraintModel {Variable1Row = 3, Variable1Column = 2, Variable2Row = 3, Variable2Column = 3, Operator = Lista2.Enums.InequalityOperator.GreaterThan},
-};
+    var futhosikiSolution = futhosiki.Solve();
 
-var futhosiki = new Futoshiki(futhoshikiSize, futhoshikiHardcodedValues, futhoshikiInequalities);
-
-var futhosikiSolution = futhosiki.Solve();
-
-if (futhosikiSolution is null)
-{
-    Console.WriteLine("No solution");
-}
-else
-{
-    Console.WriteLine("Solution found!");
-    for (int i = 0; i < futhoshikiSize; i++)
+    if (futhosikiSolution is null)
     {
-        for (int j = 0; j < futhoshikiSize; j++)
+        Console.WriteLine($"No solution for problem {input}");
+    }
+    else
+    {
+        Console.WriteLine($"Solution found for problem {input}!");
+        for (int i = 0; i < futhosiki.Size; i++)
         {
-            var variable = futhosiki.Variables[i * futhoshikiSize + j];
-            int value = futhosikiSolution[variable];
-            Console.Write($" {value} |");
+            for (int j = 0; j < futhosiki.Size; j++)
+            {
+                var variable = futhosiki.Variables[i * futhosiki.Size + j];
+                int value = futhosikiSolution[variable];
+                Console.Write($" {value} |");
+            }
+            Console.WriteLine();
         }
-        Console.WriteLine();
     }
 }
-
 
 //var hardcodedValues = new List<FieldHardcodedValue> { 
 //    new FieldHardcodedValue { Row = 0, Column = 0, Value = 1 },
@@ -90,4 +76,21 @@ else
 //    new FieldHardcodedValue { Row = 5, Column = 1, Value = 1 },
 //    new FieldHardcodedValue { Row = 5, Column = 4, Value = 0 },
 //    new FieldHardcodedValue { Row = 5, Column = 5, Value = 0 },
+//};
+
+//var futhoshikiHardcodedValues = new List<FieldHardcodedValue>()
+//{
+//    new FieldHardcodedValue {Row = 0, Column = 2, Value = 3},
+//    new FieldHardcodedValue {Row = 1, Column = 1, Value = 3},
+//    new FieldHardcodedValue {Row = 3, Column = 3, Value = 3},
+//};
+
+//var futhoshikiInequalities = new List<InequalityConstraintModel>()
+//{
+//    new InequalityConstraintModel {Variable1Row = 1, Variable1Column = 0, Variable2Row = 2, Variable2Column = 0, Operator = Lista2.Enums.InequalityOperator.GreaterThan},
+//    new InequalityConstraintModel {Variable1Row = 1, Variable1Column = 1, Variable2Row = 2, Variable2Column = 1, Operator = Lista2.Enums.InequalityOperator.LessThan},
+//    new InequalityConstraintModel {Variable1Row = 1, Variable1Column = 2, Variable2Row = 2, Variable2Column = 2, Operator = Lista2.Enums.InequalityOperator.GreaterThan},
+//    new InequalityConstraintModel {Variable1Row = 2, Variable1Column = 0, Variable2Row = 3, Variable2Column = 0, Operator = Lista2.Enums.InequalityOperator.GreaterThan},
+//    new InequalityConstraintModel {Variable1Row = 3, Variable1Column = 0, Variable2Row = 3, Variable2Column = 1, Operator = Lista2.Enums.InequalityOperator.GreaterThan},
+//    new InequalityConstraintModel {Variable1Row = 3, Variable1Column = 2, Variable2Row = 3, Variable2Column = 3, Operator = Lista2.Enums.InequalityOperator.GreaterThan},
 //};
