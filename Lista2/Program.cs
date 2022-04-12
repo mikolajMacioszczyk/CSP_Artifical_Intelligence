@@ -4,8 +4,8 @@ using Lista2.Model;
 using Lista2.Services;
 
 var fileSerializer = new FileSerializer();
-var binaryInputs = new string[] { "binary_6x6", "binary_8x8", "binary_10x10" };
-//var binaryInputs = new string[] { };
+//var binaryInputs = new string[] { "binary_6x6", "binary_8x8", "binary_10x10" };
+var binaryInputs = new string[] { };
 
 foreach (var binaryInput in binaryInputs)
 {
@@ -44,7 +44,8 @@ foreach (var input in futoshikiInputs)
 {
     var futhosiki = fileSerializer.ReadFutoshiki(input);
 
-    var futhosikiSolution = futhosiki.Solve();
+    var futhosikiSolution = futhosiki.SolveBacktracking();
+    var futhosikiSolution2 = futhosiki.SolveForwardChecking();
 
     if (futhosikiSolution is null)
     {
@@ -61,6 +62,30 @@ foreach (var input in futoshikiInputs)
             {
                 var variable = futhosiki.Variables[i * futhosiki.Size + j];
                 int value = futhosikiSolution[variable];
+                line.Add(value);
+                Console.Write($" {value} |");
+            }
+            lines.Add(line);
+            Console.WriteLine();
+        }
+        Console.WriteLine($"Stored result in {fileSerializer.SaveFutoshikiToFile(lines, futhosiki.Inequalities, input)}");
+    }
+
+    if (futhosikiSolution2 is null)
+    {
+        Console.WriteLine($"222222No solution for problem {input}");
+    }
+    else
+    {
+        Console.WriteLine($"22222Solution found for problem {input}!");
+        var lines = new List<List<int>>();
+        for (int i = 0; i < futhosiki.Size; i++)
+        {
+            var line = new List<int>();
+            for (int j = 0; j < futhosiki.Size; j++)
+            {
+                var variable = futhosiki.Variables[i * futhosiki.Size + j];
+                int value = futhosikiSolution2[variable];
                 line.Add(value);
                 Console.Write($" {value} |");
             }

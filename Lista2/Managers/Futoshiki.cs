@@ -24,9 +24,14 @@ namespace Lista2.Managers
             AddConstraints(inequalityConstraints);
         }
 
-        public Dictionary<Field, int> Solve()
+        public Dictionary<Field, int> SolveBacktracking()
         {
             return csp.Backtracking(new Dictionary<Field, int>());
+        }
+
+        public Dictionary<Field, int> SolveForwardChecking()
+        {
+            return csp.ForwardChecking(new Dictionary<Field, int>());
         }
 
         private void InitializeVariables()

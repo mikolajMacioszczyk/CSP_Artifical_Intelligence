@@ -41,23 +41,25 @@ namespace Lista2.Model
             }
         }
 
-        public override void Propagate(Field variable, int value, Dictionary<Field, List<int>> domains)
+        public override void Propagate(Field variable, Dictionary<Field, int> assigement, Dictionary<Field, List<int>> domains)
         {
+            int value = assigement[variable];
+
             if (Variable1.Equals(variable))
             {
                 switch (InequalityOperator)
                 {
                     case InequalityOperator.GreaterThan:
-                        domains[Variable2] = domains[Variable2].Where(v => v >= value).ToList();
+                        domains[Variable2] = domains[Variable2].Where(v => v < value).ToList();
                         break;
                     case InequalityOperator.GreaterThanOrEqual:
-                        domains[Variable2] = domains[Variable2].Where(v => v > value).ToList();
-                        break;
-                    case InequalityOperator.LessThan:
                         domains[Variable2] = domains[Variable2].Where(v => v <= value).ToList();
                         break;
+                    case InequalityOperator.LessThan:
+                        domains[Variable2] = domains[Variable2].Where(v => v > value).ToList();
+                        break;
                     case InequalityOperator.LessThanOrEqual:
-                        domains[Variable2] = domains[Variable2].Where(v => v < value).ToList();
+                        domains[Variable2] = domains[Variable2].Where(v => v >= value).ToList();
                         break;
                     default:
                         throw new ArgumentException(nameof(InequalityOperator));
@@ -68,16 +70,16 @@ namespace Lista2.Model
                 switch (InequalityOperator)
                 {
                     case InequalityOperator.GreaterThan:
-                        domains[Variable1] = domains[Variable1].Where(v => v <= value).ToList();
+                        domains[Variable1] = domains[Variable1].Where(v => v > value).ToList();
                         break;
                     case InequalityOperator.GreaterThanOrEqual:
-                        domains[Variable1] = domains[Variable1].Where(v => v < value).ToList();
-                        break;
-                    case InequalityOperator.LessThan:
                         domains[Variable1] = domains[Variable1].Where(v => v >= value).ToList();
                         break;
+                    case InequalityOperator.LessThan:
+                        domains[Variable1] = domains[Variable1].Where(v => v < value).ToList();
+                        break;
                     case InequalityOperator.LessThanOrEqual:
-                        domains[Variable1] = domains[Variable1].Where(v => v > value).ToList();
+                        domains[Variable1] = domains[Variable1].Where(v => v <= value).ToList();
                         break;
                     default:
                         throw new ArgumentException(nameof(InequalityOperator));

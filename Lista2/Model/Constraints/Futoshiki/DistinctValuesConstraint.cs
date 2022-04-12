@@ -24,8 +24,9 @@
             return true;
         }
 
-        public override void Propagate(Field variable, int value, Dictionary<Field, List<int>> domains)
+        public override void Propagate(Field variable, Dictionary<Field, int> assigement, Dictionary<Field, List<int>> domains)
         {
+            int value = assigement[variable];
             if (Variables.Contains(variable))
             {
                 foreach (var currentVariable in Variables.Where(v => !v.Equals(variable)))

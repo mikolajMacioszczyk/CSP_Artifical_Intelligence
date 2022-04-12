@@ -22,6 +22,13 @@ namespace Lista2.Managers
             }
         }
 
+        public CSP(List<V> variables, Dictionary<V, List<D>> domains, Dictionary<V, List<Constraint<V, D>>> constraints)
+        {
+            Variables = variables;
+            Domains = domains;
+            Constraints = constraints;
+        }
+
         public void AddConstraint(Constraint<V, D> constraint)
         {
             foreach (var variable in constraint.Variables)
@@ -68,6 +75,54 @@ namespace Lista2.Managers
             }
 
             return null;
+        }
+
+        public Dictionary<V, D> ForwardChecking(Dictionary<V, D> assigements)
+        {
+            if (assigements.Count == Variables.Count)
+            {
+                return assigements;
+            }
+
+            var unassigned = Variables.Where(v => !assigements.ContainsKey(v)).ToList();
+            var first = unassigned[0];
+            foreach (var value in Domains[first])
+            {
+                assigements.Add(first, value);
+
+                if (Consistent(first, assigements))
+                {
+                    var domainsArchive = DeepCopyDomains();
+
+                    // propagate
+                    foreach (var constraint in Constraints[first])
+                    {
+                        constraint.Propagate(first, assigements, Domains);
+                    }
+
+                    // forward checking
+                    var result = ForwardChecking(assigements);
+                    if (result != null)
+                    {
+                        return result;
+                    }
+
+                    Domains = domainsArchive;
+                }
+                assigements.Remove(first);
+            }
+
+            return null;
+        }
+
+        private Dictionary<V, List<D>> DeepCopyDomains()
+        {
+            var copy = new Dictionary<V, List<D>>(Domains.Count);
+            foreach (var domain in Domains)
+            {
+                copy.Add(domain.Key, new List<D>(domain.Value));
+            }
+            return copy;
         }
     }
 }

@@ -19,7 +19,7 @@
             return count * 2 == Variables.Count;
         }
 
-        public override void Propagate(Field variable, int value, Dictionary<Field, List<int>> domains)
+        public override void Propagate(Field variable, Dictionary<Field, int> assigement, Dictionary<Field, List<int>> domains)
         {
             throw new NotImplementedException();
         }
