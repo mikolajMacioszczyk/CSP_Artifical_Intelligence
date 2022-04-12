@@ -9,7 +9,8 @@ namespace Lista2.Managers
         public List<Field> Variables { get; private set; } = new List<Field>();
         public Dictionary<Field, List<int>> Domains { get; private set; } = new();
 
-        public Futoshiki(int size, List<FieldHardcodedValue> hardcodedValues)
+        public Futoshiki(int size, List<FieldHardcodedValue> hardcodedValues, 
+            List<InequalityConstraintModel> inequalityConstraints)
         {
             Size = size;
 
@@ -18,7 +19,7 @@ namespace Lista2.Managers
 
             csp = new CSP<Field, int>(Variables, Domains);
 
-            AddConstraints();
+            AddConstraints(inequalityConstraints);
         }
 
         public Dictionary<Field, int> Solve()
@@ -53,9 +54,38 @@ namespace Lista2.Managers
             }
         }
 
-        private void AddConstraints()
+        private void AddConstraints(List<InequalityConstraintModel> inequalityConstraints)
         {
+            // distinct values at row
+            for (int row = 0; row < Size; row++)
+            {
+                var rowVariables = new List<Field>();
+                for (int column = 0; column < Size; column++)
+                {
+                    rowVariables.Add(Variables.First(v => v.Row == row && v.Column == column));
+                }
+                csp.AddConstraint(new DistinctValuesConstraint(rowVariables));
+            }
 
+            // distinct values at column
+            for (int column = 0; column < Size; column++)
+            {
+                var columnVariables = new List<Field>();
+                for (int row = 0; row < Size; row++)
+                {
+                    columnVariables.Add(Variables.First(v => v.Row == row && v.Column == column));
+                }
+                csp.AddConstraint(new DistinctValuesConstraint(columnVariables));
+            }
+
+            // inequality
+            foreach (var inequality in inequalityConstraints)
+            {
+                var variable1 = Variables.First(v => v.Row == inequality.Variable1Row && v.Column == inequality.Variable1Column);
+                var variable2 = Variables.First(v => v.Row == inequality.Variable2Row && v.Column == inequality.Variable2Column);
+
+                csp.AddConstraint(new InequalityConstraint(variable1, variable2, inequality.Operator));
+            }
         }
     }
 }
