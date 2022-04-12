@@ -49,7 +49,6 @@ namespace Lista2.Managers
                 return assignments;
             }
 
-            // TODO: Choose in better way
             var unassigned = Variables.Where(v => !assignments.ContainsKey(v)).ToList();
 
             var first = unassigned[0];

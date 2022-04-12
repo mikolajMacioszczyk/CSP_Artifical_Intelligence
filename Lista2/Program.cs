@@ -4,8 +4,8 @@ using Lista2.Model;
 using Lista2.Services;
 
 var fileSerializer = new FileSerializer();
-//var binaryInputs = new string[] { "binary_6x6", "binary_8x8", "binary_10x10" };
-var binaryInputs = new string[] { };
+var binaryInputs = new string[] { "binary_6x6", "binary_8x8", "binary_10x10" };
+//var binaryInputs = new string[] { };
 
 foreach (var binaryInput in binaryInputs)
 {
