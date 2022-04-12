@@ -19,16 +19,21 @@ foreach (var binaryInput in binaryInputs)
     else
     {
         Console.WriteLine($"Solution found for problem {binaryInput}!");
+        var lines = new List<List<int>>();
         for (int i = 0; i < binary.Size; i++)
         {
+            var line = new List<int>();
             for (int j = 0; j < binary.Size; j++)
             {
                 var variable = binary.Variables[i * binary.Size + j];
                 int value = solution[variable];
                 Console.Write($" {value} |");
+                line.Add(value);
             }
+            lines.Add(line);
             Console.WriteLine();
         }
+        Console.WriteLine($"Stored result in {fileSerializer.SaveToFile(lines, binaryInput)}");
     }
     Console.WriteLine();
 }

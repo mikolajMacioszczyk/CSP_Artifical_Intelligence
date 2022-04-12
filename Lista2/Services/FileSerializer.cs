@@ -1,13 +1,15 @@
 ﻿using Lista2.Managers;
 using Lista2.Model;
+using System.Text;
 
 namespace Lista2.Services
 {
     public class FileSerializer
     {
+        #region Binary
         public Binary ReadBinary(string fileName)
         {
-            var path = GetFilePath(fileName);
+            var path = GetInputFilePath(fileName);
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException();
@@ -44,9 +46,33 @@ namespace Lista2.Services
             return new Binary(lines.Count, hardcodedValues);
         }
 
+        public string SaveToFile(List<List<int>> solution, string fileName)
+        {
+            string resultFileName = $"{fileName}_{Guid.NewGuid()}";
+            var path = GetOutputFilePath(resultFileName);
+            
+            var lines = new List<string>();
+            for (int row = 0; row < solution.Count; row++)
+            {
+                var sb = new StringBuilder();
+                for (int column = 0; column < solution[row].Count; column++)
+                {
+                     sb.Append($" {solution[row][column]} |");
+                }
+                lines.Add(sb.ToString());
+            }
+
+            File.WriteAllLines(path, lines);
+
+            return resultFileName;
+        }
+
+        #endregion
+
+
         public Futoshiki ReadFutoshiki(string fileName)
         {
-            var path = GetFilePath(fileName);
+            var path = GetInputFilePath(fileName);
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException();
@@ -115,10 +141,19 @@ namespace Lista2.Services
             return new Futoshiki(lines.Count, hardcodedValues, inequalities);
         }
     
-        private string GetFilePath(string fileName)
+        private string GetInputFilePath(string fileName)
         {
-            var root = Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName;
+            var root = GetBaseFilePath();
             return Path.Combine(root, "Input", fileName);
         }
+
+        private string GetOutputFilePath(string fileName)
+        {
+            var root = GetBaseFilePath();
+            return Path.Combine(root, "Output", fileName);
+        }
+
+        private string GetBaseFilePath() => 
+            Directory.GetParent(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).FullName).FullName).FullName;
     }
 }
