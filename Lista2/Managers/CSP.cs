@@ -55,18 +55,17 @@ namespace Lista2.Managers
             var first = unassigned[0];
             foreach (var value in Domains[first])
             {
-                // TODO: Do not copy
-                var local_assignment = new Dictionary<V, D>(assignments);
-                local_assignment.Add(first, value);
+                assignments.Add(first, value);
 
-                if (Consistent(first, local_assignment))
+                if (Consistent(first, assignments))
                 {
-                    var result = Backtracking(local_assignment);
+                    var result = Backtracking(assignments);
                     if (result != null)
                     {
                         return result;
                     }
                 }
+                assignments.Remove(first);
             }
 
             return null;
