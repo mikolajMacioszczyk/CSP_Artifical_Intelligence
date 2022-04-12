@@ -1,48 +1,36 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Lista2.Managers;
 using Lista2.Model;
+using Lista2.Services;
 
-int binarySize = 6;
+var fileSerializer = new FileSerializer();
+var binaryInputs = new string[] { "binary_6x6", "binary_8x8", "binary_10x10" };
 
-var hardcodedValues = new List<FieldHardcodedValue> { 
-    new FieldHardcodedValue { Row = 0, Column = 0, Value = 1 },
-    new FieldHardcodedValue { Row = 0, Column = 3, Value = 0 },
-    new FieldHardcodedValue { Row = 1, Column = 2, Value = 0 },
-    new FieldHardcodedValue { Row = 1, Column = 3, Value = 0 },
-    new FieldHardcodedValue { Row = 1, Column = 5, Value = 1 },
-    new FieldHardcodedValue { Row = 2, Column = 1, Value = 0 },
-    new FieldHardcodedValue { Row = 2, Column = 2, Value = 0 },
-    new FieldHardcodedValue { Row = 2, Column = 5, Value = 1 },
-    new FieldHardcodedValue { Row = 4, Column = 0, Value = 0 },
-    new FieldHardcodedValue { Row = 4, Column = 1, Value = 0 },
-    new FieldHardcodedValue { Row = 4, Column = 3, Value = 1 },
-    new FieldHardcodedValue { Row = 5, Column = 1, Value = 1 },
-    new FieldHardcodedValue { Row = 5, Column = 4, Value = 0 },
-    new FieldHardcodedValue { Row = 5, Column = 5, Value = 0 },
-};
-
-var binary = new Binary(binarySize, hardcodedValues);
-
-var solution = binary.Solve();
-if (solution is null)
+foreach (var binaryInput in binaryInputs)
 {
-    Console.WriteLine("No solution");
-}
-else
-{
-    Console.WriteLine("Solution found!");
-    for (int i = 0; i < binarySize; i++)
+    var binary = fileSerializer.ReadBinary(binaryInput);
+
+    var solution = binary.Solve();
+    if (solution is null)
     {
-        for (int j = 0; j < binarySize; j++)
-        {
-            var variable = binary.Variables[i * binarySize + j];
-            int value = solution[variable];
-            Console.Write($" {value} |");
-        }
-        Console.WriteLine();
+        Console.WriteLine($"No solution for problem {binaryInput}");
     }
+    else
+    {
+        Console.WriteLine($"Solution found for problem {binaryInput}!");
+        for (int i = 0; i < binary.Size; i++)
+        {
+            for (int j = 0; j < binary.Size; j++)
+            {
+                var variable = binary.Variables[i * binary.Size + j];
+                int value = solution[variable];
+                Console.Write($" {value} |");
+            }
+            Console.WriteLine();
+        }
+    }
+    Console.WriteLine();
 }
-
 
 int futhoshikiSize = 4;
 
@@ -85,3 +73,21 @@ else
         Console.WriteLine();
     }
 }
+
+
+//var hardcodedValues = new List<FieldHardcodedValue> { 
+//    new FieldHardcodedValue { Row = 0, Column = 0, Value = 1 },
+//    new FieldHardcodedValue { Row = 0, Column = 3, Value = 0 },
+//    new FieldHardcodedValue { Row = 1, Column = 2, Value = 0 },
+//    new FieldHardcodedValue { Row = 1, Column = 3, Value = 0 },
+//    new FieldHardcodedValue { Row = 1, Column = 5, Value = 1 },
+//    new FieldHardcodedValue { Row = 2, Column = 1, Value = 0 },
+//    new FieldHardcodedValue { Row = 2, Column = 2, Value = 0 },
+//    new FieldHardcodedValue { Row = 2, Column = 5, Value = 1 },
+//    new FieldHardcodedValue { Row = 4, Column = 0, Value = 0 },
+//    new FieldHardcodedValue { Row = 4, Column = 1, Value = 0 },
+//    new FieldHardcodedValue { Row = 4, Column = 3, Value = 1 },
+//    new FieldHardcodedValue { Row = 5, Column = 1, Value = 1 },
+//    new FieldHardcodedValue { Row = 5, Column = 4, Value = 0 },
+//    new FieldHardcodedValue { Row = 5, Column = 5, Value = 0 },
+//};
