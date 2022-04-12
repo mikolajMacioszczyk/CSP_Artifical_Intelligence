@@ -19,5 +19,10 @@
 
             return sum != Variables.Count;
         }
+
+        public override void Propagate(Field variable, int value, Dictionary<Field, List<int>> domains)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

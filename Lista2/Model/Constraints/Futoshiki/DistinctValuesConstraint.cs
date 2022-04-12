@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Lista2.Model
+﻿namespace Lista2.Model
 {
     public class DistinctValuesConstraint : Constraint<Field, int>
     {
@@ -28,6 +22,17 @@ namespace Lista2.Model
                 }
             }
             return true;
+        }
+
+        public override void Propagate(Field variable, int value, Dictionary<Field, List<int>> domains)
+        {
+            if (Variables.Contains(variable))
+            {
+                foreach (var currentVariable in Variables.Where(v => !v.Equals(variable)))
+                {
+                    domains[currentVariable] = domains[currentVariable].Where(v => v != value).ToList();
+                }
+            }
         }
     }
 }

@@ -10,5 +10,7 @@
         }
 
         abstract public bool IsStisfied(Dictionary<V, D> assignement);
+
+        abstract public void Propagate(V variable, D value, Dictionary<V, List<D>> domains);
     }
 }

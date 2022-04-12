@@ -25,6 +25,11 @@ namespace Lista2.Model
             return ValidateRows(assignement) && ValidateColumns(assignement);
         }
 
+        public override void Propagate(Field variable, int value, Dictionary<Field, List<int>> domains)
+        {
+            throw new NotImplementedException();
+        }
+
         private bool ValidateRows(Dictionary<Field, int> assigement) 
         {
             var rowStrings = new List<string>();
