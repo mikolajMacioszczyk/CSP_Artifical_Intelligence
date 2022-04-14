@@ -26,12 +26,20 @@ namespace Lista2.Managers
 
         public Dictionary<Field, int> SolveBacktracking()
         {
-            return csp.Backtracking(new Dictionary<Field, int>());
+            var result = csp.Backtracking();
+
+            Console.WriteLine($"Backtracking Count = {result.Item2}");
+
+            return result.Item1;
         }
 
         public Dictionary<Field, int> SolveForwardChecking()
         {
-            return csp.ForwardChecking(new Dictionary<Field, int>());
+            var result = csp.ForwardChecking();
+
+            Console.WriteLine($"ForwardChecking Count = {result.Item2}");
+
+            return result.Item1;
         }
 
         private void InitializeVariables()

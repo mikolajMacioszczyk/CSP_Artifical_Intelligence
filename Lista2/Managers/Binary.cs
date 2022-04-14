@@ -23,7 +23,11 @@ namespace Lista2.Managers
 
         public Dictionary<Field, int> Solve()
         {
-            return csp.Backtracking(new Dictionary<Field, int>());
+            var result = csp.Backtracking();
+
+            Console.WriteLine($"Count = {result.Item2}");
+
+            return result.Item1;
         }
 
         private void InitializeVariables()

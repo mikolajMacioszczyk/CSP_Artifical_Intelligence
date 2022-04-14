@@ -8,6 +8,7 @@ namespace Lista2.Managers
 
         public Dictionary<V, List<D>> Domains { get; set; }
         public Dictionary<V, List<Constraint<V, D>>> Constraints { get; set; }
+        private int counter = 0;
 
         public CSP(
             List<V> variables,
@@ -49,7 +50,14 @@ namespace Lista2.Managers
             return true;
         }
 
-        public Dictionary<V, D> Backtracking(Dictionary<V, D> assignments)
+        public (Dictionary<V, D>, int) Backtracking()
+        {
+            counter = 0;
+            var result = Backtracking(new Dictionary<V, D>());
+            return (result, counter);
+        }
+
+        private Dictionary<V, D> Backtracking(Dictionary<V, D> assignments)
         {
             if (assignments.Count == Variables.Count)
             {
@@ -61,6 +69,8 @@ namespace Lista2.Managers
             var first = unassigned[0];
             foreach (var value in Domains[first])
             {
+                counter++;
+
                 assignments.Add(first, value);
 
                 if (Consistent(first, assignments))
@@ -77,7 +87,14 @@ namespace Lista2.Managers
             return null;
         }
 
-        public Dictionary<V, D> ForwardChecking(Dictionary<V, D> assigements)
+        public (Dictionary<V, D>, int) ForwardChecking()
+        {
+            counter = 0;
+            var result = ForwardChecking(new Dictionary<V, D>());
+            return (result, counter);
+        }
+
+        private Dictionary<V, D> ForwardChecking(Dictionary<V, D> assigements)
         {
             if (assigements.Count == Variables.Count)
             {
@@ -88,8 +105,11 @@ namespace Lista2.Managers
             var first = unassigned[0];
             foreach (var value in Domains[first])
             {
+                counter++;
+
                 assigements.Add(first, value);
 
+                // TODO: Consider removing this check
                 if (Consistent(first, assigements))
                 {
                     var domainsArchive = DeepCopyDomains();

@@ -13,8 +13,4 @@
     <None Remove="Interfaces\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Output\" />
-  </ItemGroup>
-
 </Project>
