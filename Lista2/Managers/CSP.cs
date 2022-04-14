@@ -1,4 +1,5 @@
-﻿using Lista2.Model;
+﻿using Lista2.Interface;
+using Lista2.Model;
 
 namespace Lista2.Managers
 {
@@ -8,6 +9,7 @@ namespace Lista2.Managers
 
         public Dictionary<V, List<D>> Domains { get; set; }
         public Dictionary<V, List<Constraint<V, D>>> Constraints { get; set; }
+
         private int counter = 0;
 
         public CSP(
@@ -21,13 +23,6 @@ namespace Lista2.Managers
             {
                 Constraints.Add(variable, new List<Constraint<V, D>>());
             }
-        }
-
-        public CSP(List<V> variables, Dictionary<V, List<D>> domains, Dictionary<V, List<Constraint<V, D>>> constraints)
-        {
-            Variables = variables;
-            Domains = domains;
-            Constraints = constraints;
         }
 
         public void AddConstraint(Constraint<V, D> constraint)
@@ -50,14 +45,14 @@ namespace Lista2.Managers
             return true;
         }
 
-        public (Dictionary<V, D>, int) Backtracking()
+        public (Dictionary<V, D>, int) Backtracking(IValueHeuristic<D> valueHeuristic)
         {
             counter = 0;
-            var result = Backtracking(new Dictionary<V, D>());
+            var result = Backtracking(new Dictionary<V, D>(), valueHeuristic);
             return (result, counter);
         }
 
-        private Dictionary<V, D> Backtracking(Dictionary<V, D> assignments)
+        private Dictionary<V, D> Backtracking(Dictionary<V, D> assignments, IValueHeuristic<D> valueHeuristic)
         {
             if (assignments.Count == Variables.Count)
             {
@@ -67,7 +62,7 @@ namespace Lista2.Managers
             var unassigned = Variables.Where(v => !assignments.ContainsKey(v)).ToList();
 
             var first = unassigned[0];
-            foreach (var value in Domains[first])
+            foreach (var value in valueHeuristic.OrderValues(Domains[first]))
             {
                 counter++;
 
@@ -75,7 +70,7 @@ namespace Lista2.Managers
 
                 if (Consistent(first, assignments))
                 {
-                    var result = Backtracking(assignments);
+                    var result = Backtracking(assignments, valueHeuristic);
                     if (result != null)
                     {
                         return result;
@@ -87,14 +82,14 @@ namespace Lista2.Managers
             return null;
         }
 
-        public (Dictionary<V, D>, int) ForwardChecking()
+        public (Dictionary<V, D>, int) ForwardChecking(IValueHeuristic<D> valueHeuristic)
         {
             counter = 0;
-            var result = ForwardChecking(new Dictionary<V, D>());
+            var result = ForwardChecking(new Dictionary<V, D>(), valueHeuristic);
             return (result, counter);
         }
 
-        private Dictionary<V, D> ForwardChecking(Dictionary<V, D> assigements)
+        private Dictionary<V, D> ForwardChecking(Dictionary<V, D> assigements, IValueHeuristic<D> valueHeuristic)
         {
             if (assigements.Count == Variables.Count)
             {
@@ -103,7 +98,7 @@ namespace Lista2.Managers
 
             var unassigned = Variables.Where(v => !assigements.ContainsKey(v)).ToList();
             var first = unassigned[0];
-            foreach (var value in Domains[first])
+            foreach (var value in valueHeuristic.OrderValues(Domains[first]))
             {
                 counter++;
 
@@ -121,7 +116,7 @@ namespace Lista2.Managers
                     }
 
                     // forward checking
-                    var result = ForwardChecking(assigements);
+                    var result = ForwardChecking(assigements, valueHeuristic);
                     if (result != null)
                     {
                         return result;

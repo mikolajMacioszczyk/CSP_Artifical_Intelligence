@@ -1,4 +1,5 @@
-﻿using Lista2.Model;
+﻿using Lista2.Interface;
+using Lista2.Model;
 
 namespace Lista2.Managers
 {
@@ -21,9 +22,9 @@ namespace Lista2.Managers
             AddConstraints();
         }
 
-        public Dictionary<Field, int> Solve()
+        public Dictionary<Field, int> Solve(IValueHeuristic<int> valueHeuristic)
         {
-            var result = csp.Backtracking();
+            var result = csp.Backtracking(valueHeuristic);
 
             Console.WriteLine($"Count = {result.Item2}");
 

@@ -1,4 +1,5 @@
-﻿using Lista2.Model;
+﻿using Lista2.Interface;
+using Lista2.Model;
 
 namespace Lista2.Managers
 {
@@ -10,7 +11,7 @@ namespace Lista2.Managers
         public Dictionary<Field, List<int>> Domains { get; private set; } = new();
         public List<InequalityConstraintModel> Inequalities { get; set; }
 
-        public Futoshiki(int size, List<FieldHardcodedValue> hardcodedValues, 
+        public Futoshiki(int size, List<FieldHardcodedValue> hardcodedValues,
             List<InequalityConstraintModel> inequalityConstraints)
         {
             Size = size;
@@ -24,18 +25,18 @@ namespace Lista2.Managers
             AddConstraints(inequalityConstraints);
         }
 
-        public Dictionary<Field, int> SolveBacktracking()
+        public Dictionary<Field, int> SolveBacktracking(IValueHeuristic<int> valueHeuristic)
         {
-            var result = csp.Backtracking();
+            var result = csp.Backtracking(valueHeuristic);
 
             Console.WriteLine($"Backtracking Count = {result.Item2}");
 
             return result.Item1;
         }
 
-        public Dictionary<Field, int> SolveForwardChecking()
+        public Dictionary<Field, int> SolveForwardChecking(IValueHeuristic<int> valueHeuristic)
         {
-            var result = csp.ForwardChecking();
+            var result = csp.ForwardChecking(valueHeuristic);
 
             Console.WriteLine($"ForwardChecking Count = {result.Item2}");
 
