@@ -67,6 +67,7 @@ namespace Lista2.Managers
                 counter++;
 
                 assignments.Add(first, value);
+                valueHeuristic.Use(value);
 
                 if (Consistent(first, assignments))
                 {
@@ -77,6 +78,7 @@ namespace Lista2.Managers
                     }
                 }
                 assignments.Remove(first);
+                valueHeuristic.Remove(value);
             }
 
             return null;
@@ -103,6 +105,7 @@ namespace Lista2.Managers
                 counter++;
 
                 assigements.Add(first, value);
+                valueHeuristic.Use(value);
 
                 // TODO: Consider removing this check
                 if (Consistent(first, assigements))
@@ -125,6 +128,7 @@ namespace Lista2.Managers
                     Domains = domainsArchive;
                 }
                 assigements.Remove(first);
+                valueHeuristic.Remove(value);
             }
 
             return null;

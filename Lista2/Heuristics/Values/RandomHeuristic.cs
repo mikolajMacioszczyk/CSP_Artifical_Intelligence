@@ -10,5 +10,13 @@ namespace Lista2.Heuristics.Values
         {
             return values.OrderBy(x => _random.Next());
         }
+
+        public void Remove(T value)
+        {
+        }
+
+        public void Use(T value)
+        {
+        }
     }
 }

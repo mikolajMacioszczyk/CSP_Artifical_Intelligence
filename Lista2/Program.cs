@@ -1,9 +1,12 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Lista2.Heuristics.Values;
+using Lista2.Interface;
 using Lista2.Services;
 
-var valueHeuristic = new RandomHeuristic<int>();
-
+IValueHeuristic<int> GetValueGeuristic()
+{
+    return new QueueHeuristic<int>();
+}
 
 
 var fileSerializer = new FileSerializer();
@@ -14,7 +17,7 @@ foreach (var binaryInput in binaryInputs)
 {
     var binary = fileSerializer.ReadBinary(binaryInput);
 
-    var solution = binary.Solve(valueHeuristic);
+    var solution = binary.Solve(GetValueGeuristic());
     if (solution is null)
     {
         Console.WriteLine($"No solution for problem {binaryInput}");
@@ -47,8 +50,8 @@ foreach (var input in futoshikiInputs)
 {
     var futhosiki = fileSerializer.ReadFutoshiki(input);
 
-    var futhosikiSolution = futhosiki.SolveBacktracking(valueHeuristic);
-    var futhosikiSolution2 = futhosiki.SolveForwardChecking(valueHeuristic);
+    var futhosikiSolution = futhosiki.SolveBacktracking(GetValueGeuristic());
+    var futhosikiSolution2 = futhosiki.SolveForwardChecking(GetValueGeuristic());
 
     if (futhosikiSolution is null)
     {
