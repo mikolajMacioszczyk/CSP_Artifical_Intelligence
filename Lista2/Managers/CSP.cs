@@ -45,18 +45,20 @@ namespace Lista2.Managers
             return true;
         }
 
-        public (Dictionary<V, D>, int) Backtracking(IValueHeuristic<D> valueHeuristic)
+        public (List<Dictionary<V, D>>, int) Backtracking(IValueHeuristic<D> valueHeuristic, int maxSolutions)
         {
             counter = 0;
-            var result = Backtracking(new Dictionary<V, D>(), valueHeuristic);
-            return (result, counter);
+            var solutions = new List<Dictionary<V, D>>();
+            Backtracking(new Dictionary<V, D>(), solutions, maxSolutions, valueHeuristic);
+            return (solutions, counter);
         }
 
-        private Dictionary<V, D> Backtracking(Dictionary<V, D> assignments, IValueHeuristic<D> valueHeuristic)
+        private void Backtracking(Dictionary<V, D> assignments, List<Dictionary<V, D>> solutions, int maxSolutions, IValueHeuristic<D> valueHeuristic)
         {
             if (assignments.Count == Variables.Count)
             {
-                return assignments;
+                solutions.Add(new Dictionary<V, D>(assignments));
+                return;
             }
 
             var unassigned = Variables.Where(v => !assignments.ContainsKey(v)).ToList();
@@ -71,31 +73,31 @@ namespace Lista2.Managers
 
                 if (Consistent(first, assignments))
                 {
-                    var result = Backtracking(assignments, valueHeuristic);
-                    if (result != null)
+                    Backtracking(assignments, solutions, maxSolutions, valueHeuristic);
+                    if (solutions.Count >= maxSolutions)
                     {
-                        return result;
+                        return;
                     }
                 }
                 assignments.Remove(first);
                 valueHeuristic.Remove(value);
             }
-
-            return null;
         }
 
-        public (Dictionary<V, D>, int) ForwardChecking(IValueHeuristic<D> valueHeuristic)
+        public (List<Dictionary<V, D>>, int) ForwardChecking(IValueHeuristic<D> valueHeuristic, int maxSolutions)
         {
             counter = 0;
-            var result = ForwardChecking(new Dictionary<V, D>(), valueHeuristic);
-            return (result, counter);
+            var solutions = new List<Dictionary<V, D>>();
+            ForwardChecking(new Dictionary<V, D>(), solutions, maxSolutions, valueHeuristic);
+            return (solutions, counter);
         }
 
-        private Dictionary<V, D> ForwardChecking(Dictionary<V, D> assigements, IValueHeuristic<D> valueHeuristic)
+        private void ForwardChecking(Dictionary<V, D> assigements, List<Dictionary<V, D>> solutions, int maxSolutions, IValueHeuristic<D> valueHeuristic)
         {
             if (assigements.Count == Variables.Count)
             {
-                return assigements;
+                solutions.Add(new Dictionary<V, D>(assigements));
+                return;
             }
 
             var unassigned = Variables.Where(v => !assigements.ContainsKey(v)).ToList();
@@ -119,19 +121,18 @@ namespace Lista2.Managers
                     }
 
                     // forward checking
-                    var result = ForwardChecking(assigements, valueHeuristic);
-                    if (result != null)
+                    ForwardChecking(assigements, solutions, maxSolutions, valueHeuristic);
+                    if (solutions.Count >= maxSolutions)
                     {
-                        return result;
+                        return;
                     }
-
                     Domains = domainsArchive;
                 }
                 assigements.Remove(first);
                 valueHeuristic.Remove(value);
             }
 
-            return null;
+            return;
         }
 
         private Dictionary<V, List<D>> DeepCopyDomains()

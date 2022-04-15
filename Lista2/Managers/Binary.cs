@@ -22,9 +22,9 @@ namespace Lista2.Managers
             AddConstraints();
         }
 
-        public Dictionary<Field, int> Solve(IValueHeuristic<int> valueHeuristic)
+        public List<Dictionary<Field, int>> Solve(IValueHeuristic<int> valueHeuristic, int maxSolutions)
         {
-            var result = csp.Backtracking(valueHeuristic);
+            var result = csp.Backtracking(valueHeuristic, maxSolutions);
 
             Console.WriteLine($"Count = {result.Item2}");
 

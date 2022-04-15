@@ -25,18 +25,18 @@ namespace Lista2.Managers
             AddConstraints(inequalityConstraints);
         }
 
-        public Dictionary<Field, int> SolveBacktracking(IValueHeuristic<int> valueHeuristic)
+        public List<Dictionary<Field, int>> SolveBacktracking(IValueHeuristic<int> valueHeuristic, int maxSolutions)
         {
-            var result = csp.Backtracking(valueHeuristic);
+            var result = csp.Backtracking(valueHeuristic, maxSolutions);
 
             Console.WriteLine($"Backtracking Count = {result.Item2}");
 
             return result.Item1;
         }
 
-        public Dictionary<Field, int> SolveForwardChecking(IValueHeuristic<int> valueHeuristic)
+        public List<Dictionary<Field, int>> SolveForwardChecking(IValueHeuristic<int> valueHeuristic, int maxSolutions)
         {
-            var result = csp.ForwardChecking(valueHeuristic);
+            var result = csp.ForwardChecking(valueHeuristic, maxSolutions);
 
             Console.WriteLine($"ForwardChecking Count = {result.Item2}");
 
