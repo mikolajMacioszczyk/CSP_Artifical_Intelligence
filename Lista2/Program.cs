@@ -17,15 +17,17 @@ foreach (var binaryInput in binaryInputs)
 {
     var binary = fileSerializer.ReadBinary(binaryInput);
 
-    var solutions = binary.Solve(GetValueGeuristic(), maxSolutions);
-    if (!solutions.Any())
+    var solutionsBacktracking = binary.SolveBacktracking(GetValueGeuristic(), maxSolutions);
+    var solutionsForwardChecking = binary.SolveForwardChecking(GetValueGeuristic(), maxSolutions);
+
+    if (!solutionsBacktracking.Any())
     {
-        Console.WriteLine($"No solution for problem {binaryInput}");
+        Console.WriteLine($"No solution for problem {binaryInput} - Backtracking");
     }
     else
     {
-        Console.WriteLine($"{solutions.Count} Solution found for problem {binaryInput}!");
-        for (int n = 0; n < solutions.Count; n++)
+        Console.WriteLine($"{solutionsBacktracking.Count} Solution found for problem {binaryInput} - Backtracking!");
+        for (int n = 0; n < solutionsBacktracking.Count; n++)
         {
             var lines = new List<List<int>>();
             for (int i = 0; i < binary.Size; i++)
@@ -34,7 +36,35 @@ foreach (var binaryInput in binaryInputs)
                 for (int j = 0; j < binary.Size; j++)
                 {
                     var variable = binary.Variables[i * binary.Size + j];
-                    int value = solutions[n][variable];
+                    int value = solutionsBacktracking[n][variable];
+                    Console.Write($" {value} |");
+                    line.Add(value);
+                }
+                lines.Add(line);
+                Console.WriteLine();
+            }
+            Console.WriteLine($"Stored result in {fileSerializer.SaveBinaryToFile(lines, binaryInput)}");
+        }
+    }
+    Console.WriteLine();
+
+    if (!solutionsForwardChecking.Any())
+    {
+        Console.WriteLine($"No solution for problem {binaryInput} - Forward Checking");
+    }
+    else
+    {
+        Console.WriteLine($"{solutionsForwardChecking.Count} Solution found for problem {binaryInput} - Forward Checking!");
+        for (int n = 0; n < solutionsForwardChecking.Count; n++)
+        {
+            var lines = new List<List<int>>();
+            for (int i = 0; i < binary.Size; i++)
+            {
+                var line = new List<int>();
+                for (int j = 0; j < binary.Size; j++)
+                {
+                    var variable = binary.Variables[i * binary.Size + j];
+                    int value = solutionsForwardChecking[n][variable];
                     Console.Write($" {value} |");
                     line.Add(value);
                 }

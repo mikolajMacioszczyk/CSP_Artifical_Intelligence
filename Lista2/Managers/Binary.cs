@@ -22,11 +22,20 @@ namespace Lista2.Managers
             AddConstraints();
         }
 
-        public List<Dictionary<Field, int>> Solve(IValueHeuristic<int> valueHeuristic, int maxSolutions)
+        public List<Dictionary<Field, int>> SolveBacktracking(IValueHeuristic<int> valueHeuristic, int maxSolutions)
         {
             var result = csp.Backtracking(valueHeuristic, maxSolutions);
 
-            Console.WriteLine($"Count = {result.Item2}");
+            Console.WriteLine($"Backtracking Count = {result.Item2}");
+
+            return result.Item1;
+        }
+
+        public List<Dictionary<Field, int>> SolveForwardChecking(IValueHeuristic<int> valueHeuristic, int maxSolutions)
+        {
+            var result = csp.ForwardChecking(valueHeuristic, maxSolutions, false);
+
+            Console.WriteLine($"Forward Checking Count = {result.Item2}");
 
             return result.Item1;
         }

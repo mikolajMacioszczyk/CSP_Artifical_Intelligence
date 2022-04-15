@@ -21,7 +21,34 @@
 
         public override void Propagate(Field variable, Dictionary<Field, int> assigement, Dictionary<Field, List<int>> domains)
         {
-            throw new NotImplementedException();
+            var unasigned = Variables.Where(v => !assigement.ContainsKey(v)).ToList();
+            if (unasigned.Count == 0)
+            {
+                return;
+            }
+
+            var zeros = Variables.Where(v => assigement.ContainsKey(v)).Where(v => assigement[v] == 0).ToList();
+            var ones = Variables.Where(v => assigement.ContainsKey(v)).Where(v => assigement[v] == 1).ToList();
+
+            int onesMore = ones.Count - zeros.Count;
+            int zerosMore = zeros.Count - ones.Count;
+
+            if (unasigned.Count == onesMore)
+            {
+                UpdateDomains(unasigned, domains, 0);
+            }
+            else if (zeros.Count == onesMore)
+            {
+                UpdateDomains(unasigned, domains, 1);
+            }
+        }
+
+        private void UpdateDomains(List<Field> variables, Dictionary<Field, List<int>> domains, int value)
+        {
+            foreach (var unasigned in variables)
+            {
+                domains[unasigned] = new List<int> { value };
+            }
         }
     }
 }

@@ -84,15 +84,15 @@ namespace Lista2.Managers
             }
         }
 
-        public (List<Dictionary<V, D>>, int) ForwardChecking(IValueHeuristic<D> valueHeuristic, int maxSolutions)
+        public (List<Dictionary<V, D>>, int) ForwardChecking(IValueHeuristic<D> valueHeuristic, int maxSolutions, bool notNeedConsistencyCheck = true)
         {
             counter = 0;
             var solutions = new List<Dictionary<V, D>>();
-            ForwardChecking(new Dictionary<V, D>(), solutions, maxSolutions, valueHeuristic);
+            ForwardChecking(new Dictionary<V, D>(), solutions, maxSolutions, valueHeuristic, notNeedConsistencyCheck);
             return (solutions, counter);
         }
 
-        private void ForwardChecking(Dictionary<V, D> assigements, List<Dictionary<V, D>> solutions, int maxSolutions, IValueHeuristic<D> valueHeuristic)
+        private void ForwardChecking(Dictionary<V, D> assigements, List<Dictionary<V, D>> solutions, int maxSolutions, IValueHeuristic<D> valueHeuristic, bool notNeedConsistencyCheck)
         {
             if (assigements.Count == Variables.Count)
             {
@@ -118,10 +118,13 @@ namespace Lista2.Managers
                 }
 
                 // forward checking
-                ForwardChecking(assigements, solutions, maxSolutions, valueHeuristic);
-                if (solutions.Count >= maxSolutions)
+                if (notNeedConsistencyCheck || Consistent(first, assigements))
                 {
-                    return;
+                    ForwardChecking(assigements, solutions, maxSolutions, valueHeuristic, notNeedConsistencyCheck);
+                    if (solutions.Count >= maxSolutions)
+                    {
+                        return;
+                    }
                 }
                 
                 Domains = domainsArchive;
