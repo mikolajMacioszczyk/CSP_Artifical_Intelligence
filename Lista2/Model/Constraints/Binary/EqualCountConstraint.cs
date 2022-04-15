@@ -37,17 +37,17 @@
             {
                 UpdateDomains(unasigned, domains, 0);
             }
-            else if (zeros.Count == onesMore)
+            else if (unasigned.Count == zerosMore)
             {
                 UpdateDomains(unasigned, domains, 1);
             }
         }
 
-        private void UpdateDomains(List<Field> variables, Dictionary<Field, List<int>> domains, int value)
+        private void UpdateDomains(List<Field> variables, Dictionary<Field, List<int>> domains, int allowedValue)
         {
             foreach (var unasigned in variables)
             {
-                domains[unasigned] = new List<int> { value };
+                domains[unasigned] = domains[unasigned].Where(v => v == allowedValue).ToList();
             }
         }
     }
