@@ -10,7 +10,7 @@ IValueHeuristic<int> GetValueHeuristic()
 }
 IVariableHeuristic<Field, int> GetVariableHeuristic()
 {
-    return new NoHeuristic<Field, int>();
+    return new SmallerDomainHeuristic<Field, int>();
 }
 int maxSolutions = 2;
 var binaryInputs = new string[] { "binary_6x6", "binary_8x8", "binary_10x10" };
