@@ -6,18 +6,18 @@ using Lista2.Services;
 
 IValueHeuristic<int> GetValueHeuristic()
 {
-    return new QueueHeuristic<int>();
+    return new NoHeuristic<int>();
 }
 IVariableHeuristic<Field, int> GetVariableHeuristic()
 {
-    return new SmallerDomainHeuristic<Field, int>();
+    return new NoHeuristic<Field, int>();
 }
 int maxSolutions = int.MaxValue;
 
 //var binaryInputs = new string[] { "binary_6x6", "binary_8x8", "binary_10x10" };
 var binaryInputs = new string[] { "binary_2x2", "binary_3x3", "binary_4x4", "binary_5x5", "binary_6x6", "binary_7x7", "binary_8x8", "binary_9x9", "binary_10x10", "binary_12x12" }; // binary_14x14
 //var binaryInputs = new string[] { };
-var futoshikiInputs = new string[] { "futoshiki_2x2", "futoshiki_3x3", "futoshiki_4x4", "futoshiki_5x5", "futoshiki_6x6", "futoshiki_7x7", "futoshiki_8x8" }; 
+var futoshikiInputs = new string[] { "futoshiki_2x2", "futoshiki_3x3", "futoshiki_4x4", "futoshiki_5x5", "futoshiki_6x6", "futoshiki_7x7" }; 
 //var futoshikiInputs = new string[] { "futoshiki_8x8" };
 
 var fileSerializer = new FileSerializer();

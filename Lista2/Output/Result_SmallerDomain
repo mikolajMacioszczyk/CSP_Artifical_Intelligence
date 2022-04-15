@@ -1,0 +1,160 @@
+Solutions for problem binary_2x2
+
+Backtracking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,2,14,19,7773
+
+ForwardChecking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,2,8,11,4387
+
+Solutions for problem binary_3x3
+
+Backtracking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,0,14,0,5636
+
+ForwardChecking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,0,12,0,8727
+
+Solutions for problem binary_4x4
+
+Backtracking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,4,121,0,3415
+
+ForwardChecking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,4,43,0,6929
+
+Solutions for problem binary_5x5
+
+Backtracking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,0,49,0,2923
+
+ForwardChecking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,0,41,1,099
+
+Solutions for problem binary_6x6
+
+Backtracking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,1,293,1,1295
+
+ForwardChecking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,1,48,1,1148
+
+Solutions for problem binary_7x7
+
+Backtracking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,0,76,0,4011
+
+ForwardChecking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,0,11,0,3139
+
+Solutions for problem binary_8x8
+
+Backtracking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,1,4074,26,16
+
+ForwardChecking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,1,247,6,7714
+
+Solutions for problem binary_9x9
+
+Backtracking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,0,190,2,7185
+
+ForwardChecking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,0,197,10,8616
+
+Solutions for problem binary_10x10
+
+Backtracking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,1,946,13,5819
+
+ForwardChecking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,1,100,7,4369
+
+Solutions for problem binary_12x12
+
+Backtracking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,134,1710119,8875,8862
+
+ForwardChecking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,134,6673,255,8827
+
+Solutions for problem futoshiki_2x2
+
+Backtracking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,1,14,0,8254
+
+ForwardChecking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,1,7,2,4051
+
+Solutions for problem futoshiki_3x3
+
+Backtracking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,1,49,0,0815
+
+ForwardChecking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,1,16,0,2013
+
+Solutions for problem futoshiki_4x4
+
+Backtracking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,1,865,0,9391
+
+ForwardChecking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,1,60,0,4818
+
+Solutions for problem futoshiki_5x5
+
+Backtracking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,1,1193,0,8326
+
+ForwardChecking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,1,93,0,582
+
+Solutions for problem futoshiki_6x6
+
+Backtracking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,133,20837935,17909,7567
+
+ForwardChecking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,133,316948,2925,8444
+
+Solutions for problem futoshiki_7x7
+
+Backtracking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,156,14837037,12871,6075
+
+ForwardChecking
+Max Solutions, Found Solutions, Iterations, TotalMiliseconds
+2147483647,156,367177,4575,162
+
