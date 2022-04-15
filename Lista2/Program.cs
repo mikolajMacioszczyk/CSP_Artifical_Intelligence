@@ -1,11 +1,16 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Lista2.Heuristics.Values;
-using Lista2.Interface;
+using Lista2.Heuristics.Variables;
+using Lista2.Model;
 using Lista2.Services;
 
-IValueHeuristic<int> GetValueGeuristic()
+IValueHeuristic<int> GetValueHeuristic()
 {
     return new NoHeuristic<int>();
+}
+IVariableHeuristic<Field, int> GetVariableHeuristic()
+{
+    return new NoHeuristic<Field, int>();
 }
 int maxSolutions = 2;
 
@@ -17,8 +22,8 @@ foreach (var binaryInput in binaryInputs)
 {
     var binary = fileSerializer.ReadBinary(binaryInput);
 
-    var solutionsBacktracking = binary.SolveBacktracking(GetValueGeuristic(), maxSolutions);
-    var solutionsForwardChecking = binary.SolveForwardChecking(GetValueGeuristic(), maxSolutions);
+    var solutionsBacktracking = binary.SolveBacktracking(GetValueHeuristic(), GetVariableHeuristic(), maxSolutions);
+    var solutionsForwardChecking = binary.SolveForwardChecking(GetValueHeuristic(), GetVariableHeuristic(), maxSolutions);
 
     if (!solutionsBacktracking.Any())
     {
@@ -83,8 +88,8 @@ foreach (var input in futoshikiInputs)
 {
     var futhosiki = fileSerializer.ReadFutoshiki(input);
 
-    var futhosikiSolutions = futhosiki.SolveBacktracking(GetValueGeuristic(), maxSolutions);
-    var futhosikiSolutions2 = futhosiki.SolveForwardChecking(GetValueGeuristic(), maxSolutions);
+    var futhosikiSolutions = futhosiki.SolveBacktracking(GetValueHeuristic(), GetVariableHeuristic(), maxSolutions);
+    var futhosikiSolutions2 = futhosiki.SolveForwardChecking(GetValueHeuristic(), GetVariableHeuristic(), maxSolutions);
 
     if (!futhosikiSolutions.Any())
     {

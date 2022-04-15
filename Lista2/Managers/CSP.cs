@@ -1,4 +1,5 @@
-﻿using Lista2.Interface;
+﻿using Lista2.Heuristics.Values;
+using Lista2.Heuristics.Variables;
 using Lista2.Model;
 
 namespace Lista2.Managers
@@ -45,15 +46,17 @@ namespace Lista2.Managers
             return true;
         }
 
-        public (List<Dictionary<V, D>>, int) Backtracking(IValueHeuristic<D> valueHeuristic, int maxSolutions)
+        public (List<Dictionary<V, D>>, int) Backtracking(IValueHeuristic<D> valueHeuristic, 
+            IVariableHeuristic<V, D> variableHeuristic, int maxSolutions)
         {
             counter = 0;
             var solutions = new List<Dictionary<V, D>>();
-            Backtracking(new Dictionary<V, D>(), solutions, maxSolutions, valueHeuristic);
+            Backtracking(new Dictionary<V, D>(), solutions, maxSolutions, valueHeuristic, variableHeuristic);
             return (solutions, counter);
         }
 
-        private void Backtracking(Dictionary<V, D> assignments, List<Dictionary<V, D>> solutions, int maxSolutions, IValueHeuristic<D> valueHeuristic)
+        private void Backtracking(Dictionary<V, D> assignments, List<Dictionary<V, D>> solutions, 
+            int maxSolutions, IValueHeuristic<D> valueHeuristic, IVariableHeuristic<V, D> variableHeuristic)
         {
             if (assignments.Count == Variables.Count)
             {
@@ -62,6 +65,7 @@ namespace Lista2.Managers
             }
 
             var unassigned = Variables.Where(v => !assignments.ContainsKey(v)).ToList();
+            unassigned = variableHeuristic.OrderVariables(unassigned, Domains, Constraints).ToList();
 
             var first = unassigned[0];
             foreach (var value in valueHeuristic.OrderValues(Domains[first]))
@@ -73,7 +77,7 @@ namespace Lista2.Managers
 
                 if (Consistent(first, assignments))
                 {
-                    Backtracking(assignments, solutions, maxSolutions, valueHeuristic);
+                    Backtracking(assignments, solutions, maxSolutions, valueHeuristic, variableHeuristic);
                     if (solutions.Count >= maxSolutions)
                     {
                         return;
@@ -84,15 +88,17 @@ namespace Lista2.Managers
             }
         }
 
-        public (List<Dictionary<V, D>>, int) ForwardChecking(IValueHeuristic<D> valueHeuristic, int maxSolutions, bool notNeedConsistencyCheck = true)
+        public (List<Dictionary<V, D>>, int) ForwardChecking(IValueHeuristic<D> valueHeuristic, IVariableHeuristic<V, D> variableHeuristic,
+            int maxSolutions, bool notNeedConsistencyCheck = true)
         {
             counter = 0;
             var solutions = new List<Dictionary<V, D>>();
-            ForwardChecking(new Dictionary<V, D>(), solutions, maxSolutions, valueHeuristic, notNeedConsistencyCheck);
+            ForwardChecking(new Dictionary<V, D>(), solutions, maxSolutions, valueHeuristic, variableHeuristic, notNeedConsistencyCheck);
             return (solutions, counter);
         }
 
-        private void ForwardChecking(Dictionary<V, D> assigements, List<Dictionary<V, D>> solutions, int maxSolutions, IValueHeuristic<D> valueHeuristic, bool notNeedConsistencyCheck)
+        private void ForwardChecking(Dictionary<V, D> assigements, List<Dictionary<V, D>> solutions, 
+            int maxSolutions, IValueHeuristic<D> valueHeuristic, IVariableHeuristic<V, D> variableHeuristic, bool notNeedConsistencyCheck)
         {
             if (assigements.Count == Variables.Count)
             {
@@ -101,6 +107,8 @@ namespace Lista2.Managers
             }
 
             var unassigned = Variables.Where(v => !assigements.ContainsKey(v)).ToList();
+            unassigned = variableHeuristic.OrderVariables(unassigned, Domains, Constraints).ToList();
+
             var first = unassigned[0];
             foreach (var value in valueHeuristic.OrderValues(Domains[first]))
             {
@@ -120,7 +128,7 @@ namespace Lista2.Managers
                 // forward checking
                 if (notNeedConsistencyCheck || Consistent(first, assigements))
                 {
-                    ForwardChecking(assigements, solutions, maxSolutions, valueHeuristic, notNeedConsistencyCheck);
+                    ForwardChecking(assigements, solutions, maxSolutions, valueHeuristic, variableHeuristic, notNeedConsistencyCheck);
                     if (solutions.Count >= maxSolutions)
                     {
                         return;

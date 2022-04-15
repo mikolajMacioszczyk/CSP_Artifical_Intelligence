@@ -1,4 +1,5 @@
-﻿using Lista2.Interface;
+﻿using Lista2.Heuristics.Values;
+using Lista2.Heuristics.Variables;
 using Lista2.Model;
 
 namespace Lista2.Managers
@@ -22,18 +23,20 @@ namespace Lista2.Managers
             AddConstraints();
         }
 
-        public List<Dictionary<Field, int>> SolveBacktracking(IValueHeuristic<int> valueHeuristic, int maxSolutions)
+        public List<Dictionary<Field, int>> SolveBacktracking(IValueHeuristic<int> valueHeuristic, 
+            IVariableHeuristic<Field, int> variableHeuristic, int maxSolutions)
         {
-            var result = csp.Backtracking(valueHeuristic, maxSolutions);
+            var result = csp.Backtracking(valueHeuristic, variableHeuristic, maxSolutions);
 
             Console.WriteLine($"Backtracking Count = {result.Item2}");
 
             return result.Item1;
         }
 
-        public List<Dictionary<Field, int>> SolveForwardChecking(IValueHeuristic<int> valueHeuristic, int maxSolutions)
+        public List<Dictionary<Field, int>> SolveForwardChecking(IValueHeuristic<int> valueHeuristic, 
+            IVariableHeuristic<Field, int> variableHeuristic, int maxSolutions)
         {
-            var result = csp.ForwardChecking(valueHeuristic, maxSolutions, false);
+            var result = csp.ForwardChecking(valueHeuristic, variableHeuristic, maxSolutions, false);
 
             Console.WriteLine($"Forward Checking Count = {result.Item2}");
 

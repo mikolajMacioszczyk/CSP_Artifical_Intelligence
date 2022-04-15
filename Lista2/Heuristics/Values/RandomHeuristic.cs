@@ -1,6 +1,4 @@
-﻿using Lista2.Interface;
-
-namespace Lista2.Heuristics.Values
+﻿namespace Lista2.Heuristics.Values
 {
     public class RandomHeuristic<T> : IValueHeuristic<T>
     {

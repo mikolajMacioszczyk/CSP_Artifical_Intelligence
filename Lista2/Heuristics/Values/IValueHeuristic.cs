@@ -1,4 +1,4 @@
-﻿namespace Lista2.Interface
+﻿namespace Lista2.Heuristics.Values
 {
     public interface IValueHeuristic<T>
     {
