@@ -24,6 +24,7 @@
             var unasigned = Variables.Where(v => !assigement.ContainsKey(v)).ToList();
             if (unasigned.Count == 0)
             {
+                changes.Push((false, null));
                 return;
             }
 
@@ -41,14 +42,21 @@
             {
                 UpdateDomains(unasigned, domains, 1);
             }
+            else
+            {
+                changes.Push((false, null));
+            }
         }
 
         private void UpdateDomains(List<Field> variables, Dictionary<Field, List<int>> domains, int allowedValue)
         {
+            var newChanges = new List<(Field, List<int>)>();
             foreach (var unasigned in variables)
             {
+                newChanges.Add((unasigned, domains[unasigned]));
                 domains[unasigned] = domains[unasigned].Where(v => v == allowedValue).ToList();
             }
+            changes.Push((true, newChanges));
         }
     }
 }

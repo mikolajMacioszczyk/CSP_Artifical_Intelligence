@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace Lista2.Model
 {
@@ -25,7 +21,10 @@ namespace Lista2.Model
             return ValidateRows(assignement) && ValidateColumns(assignement);
         }
 
-        public override void Propagate(Field variable, Dictionary<Field, int> assigement, Dictionary<Field, List<int>> domains) {}
+        public override void Propagate(Field variable, Dictionary<Field, int> assigement, Dictionary<Field, List<int>> domains) 
+        {
+            changes.Push((false, null));
+        }
 
         private bool ValidateRows(Dictionary<Field, int> assigement) 
         {

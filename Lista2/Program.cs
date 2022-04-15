@@ -10,34 +10,34 @@ IValueHeuristic<int> GetValueHeuristic()
 }
 IVariableHeuristic<Field, int> GetVariableHeuristic()
 {
-    return new SmallerDomainHeuristic<Field, int>();
+    return new NoHeuristic<Field, int>();
 }
 int maxSolutions = 2;
 
 //var binaryInputs = new string[] { "binary_6x6", "binary_8x8", "binary_10x10" };
 //var binaryInputs = new string[] { "binary_2x2", "binary_3x3", "binary_4x4", "binary_5x5", "binary_6x6", "binary_7x7", "binary_8x8" };
-//var binaryInputs = new string[] { };
-//var futoshikiInputs = new string[] { "futoshiki_4x4", "futoshiki_5x5", "futoshiki_6x6", "futoshiki_7x7" };
-var futoshikiInputs = new string[] { "futoshiki_6x6" };
+var binaryInputs = new string[] { "binary_4x4", "binary_6x6" };
+var futoshikiInputs = new string[] { "futoshiki_4x4", "futoshiki_5x5", "futoshiki_6x6", "futoshiki_7x7" };
+//var futoshikiInputs = new string[] { "futoshiki_6x6" };
 
 var fileSerializer = new FileSerializer();
 var solutionsWithMetrics = new List<CspSolution<Field, int>>();
 
-//foreach (var binaryInput in binaryInputs)
-//{
-//    var binary = fileSerializer.ReadBinary(binaryInput);
+foreach (var binaryInput in binaryInputs)
+{
+    var binary = fileSerializer.ReadBinary(binaryInput);
 
-//    var solutionsBacktracking = binary.SolveBacktracking(GetValueHeuristic(), GetVariableHeuristic(), maxSolutions);
-//    solutionsBacktracking.ProblemName = binaryInput;
-//    solutionsWithMetrics.Add(solutionsBacktracking);
+    var solutionsBacktracking = binary.SolveBacktracking(GetValueHeuristic(), GetVariableHeuristic(), maxSolutions);
+    solutionsBacktracking.ProblemName = binaryInput;
+    solutionsWithMetrics.Add(solutionsBacktracking);
 
-//    var solutionsForwardChecking = binary.SolveForwardChecking(GetValueHeuristic(), GetVariableHeuristic(), maxSolutions);
-//    solutionsForwardChecking.ProblemName = binaryInput;
-//    solutionsWithMetrics.Add(solutionsForwardChecking);
+    var solutionsForwardChecking = binary.SolveForwardChecking(GetValueHeuristic(), GetVariableHeuristic(), maxSolutions);
+    solutionsForwardChecking.ProblemName = binaryInput;
+    solutionsWithMetrics.Add(solutionsForwardChecking);
 
-//    LoggerService.PrintBinarySolutions(solutionsBacktracking, binary.Variables, binary.Size);
-//    LoggerService.PrintBinarySolutions(solutionsForwardChecking, binary.Variables, binary.Size);
-//}
+    LoggerService.PrintBinarySolutions(solutionsBacktracking, binary.Variables, binary.Size);
+    LoggerService.PrintBinarySolutions(solutionsForwardChecking, binary.Variables, binary.Size);
+}
 
 foreach (var input in futoshikiInputs)
 {

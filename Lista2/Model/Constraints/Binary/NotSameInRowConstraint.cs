@@ -27,13 +27,20 @@
             var unassigned = Variables.Where(v => !assigement.ContainsKey(v)).ToList();
             if (unassigned.Count != 1)
             {
+                changes.Push((false, null));
                 return;
             }
             var onlyUnassigend = unassigned.First();
 
+
             if (Variables.Except(unassigned).All(v => assigement[v] == value))
             {
+                changes.Push((true, new List<(Field, List<int>)> { (onlyUnassigend, domains[onlyUnassigend]) }));
                 domains[onlyUnassigend] = domains[onlyUnassigend].Where(v => v != value).ToList();
+            }
+            else
+            {
+                changes.Push((false, null));
             }
         }
     }
