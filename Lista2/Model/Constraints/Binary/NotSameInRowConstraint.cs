@@ -17,12 +17,24 @@
                 sum += assignement[variable];
             }
 
-            return sum != Variables.Count;
+            return sum != Variables.Count && sum > 0;
         }
 
         public override void Propagate(Field variable, Dictionary<Field, int> assigement, Dictionary<Field, List<int>> domains)
         {
-            throw new NotImplementedException();
+            int value = assigement[variable];
+
+            var unassigned = Variables.Where(v => !assigement.ContainsKey(v)).ToList();
+            if (unassigned.Count != 1)
+            {
+                return;
+            }
+            var onlyUnassigend = unassigned.First();
+
+            if (Variables.Except(unassigned).All(v => assigement[v] == value))
+            {
+                domains[onlyUnassigend] = domains[onlyUnassigend].Where(v => v != value).ToList();
+            }
         }
     }
 }

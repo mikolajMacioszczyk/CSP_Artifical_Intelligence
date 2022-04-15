@@ -7,11 +7,11 @@ IValueHeuristic<int> GetValueGeuristic()
 {
     return new NoHeuristic<int>();
 }
-int maxSolutions = 10;
+int maxSolutions = 1;
 
 var fileSerializer = new FileSerializer();
-//var binaryInputs = new string[] { "binary_6x6", "binary_8x8", "binary_10x10" };
-var binaryInputs = new string[] { };
+var binaryInputs = new string[] { "binary_6x6", "binary_8x8", "binary_10x10" };
+//var binaryInputs = new string[] { };
 
 foreach (var binaryInput in binaryInputs)
 {
