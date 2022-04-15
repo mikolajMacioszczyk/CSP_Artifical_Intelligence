@@ -13,10 +13,12 @@ IVariableHeuristic<Field, int> GetVariableHeuristic()
     return new NoHeuristic<Field, int>();
 }
 int maxSolutions = 2;
-
-var fileSerializer = new FileSerializer();
 var binaryInputs = new string[] { "binary_6x6", "binary_8x8", "binary_10x10" };
 //var binaryInputs = new string[] { };
+var futoshikiInputs = new string[] { "futoshiki_4x4", "futoshiki_5x5", "futoshiki_6x6" };
+
+
+var fileSerializer = new FileSerializer();
 
 foreach (var binaryInput in binaryInputs)
 {
@@ -25,64 +27,9 @@ foreach (var binaryInput in binaryInputs)
     var solutionsBacktracking = binary.SolveBacktracking(GetValueHeuristic(), GetVariableHeuristic(), maxSolutions);
     var solutionsForwardChecking = binary.SolveForwardChecking(GetValueHeuristic(), GetVariableHeuristic(), maxSolutions);
 
-    if (!solutionsBacktracking.Any())
-    {
-        Console.WriteLine($"No solution for problem {binaryInput} - Backtracking");
-    }
-    else
-    {
-        Console.WriteLine($"{solutionsBacktracking.Count} Solution found for problem {binaryInput} - Backtracking!");
-        for (int n = 0; n < solutionsBacktracking.Count; n++)
-        {
-            var lines = new List<List<int>>();
-            for (int i = 0; i < binary.Size; i++)
-            {
-                var line = new List<int>();
-                for (int j = 0; j < binary.Size; j++)
-                {
-                    var variable = binary.Variables[i * binary.Size + j];
-                    int value = solutionsBacktracking[n][variable];
-                    Console.Write($" {value} |");
-                    line.Add(value);
-                }
-                lines.Add(line);
-                Console.WriteLine();
-            }
-            Console.WriteLine($"Stored result in {fileSerializer.SaveBinaryToFile(lines, binaryInput)}");
-        }
-    }
-    Console.WriteLine();
-
-    if (!solutionsForwardChecking.Any())
-    {
-        Console.WriteLine($"No solution for problem {binaryInput} - Forward Checking");
-    }
-    else
-    {
-        Console.WriteLine($"{solutionsForwardChecking.Count} Solution found for problem {binaryInput} - Forward Checking!");
-        for (int n = 0; n < solutionsForwardChecking.Count; n++)
-        {
-            var lines = new List<List<int>>();
-            for (int i = 0; i < binary.Size; i++)
-            {
-                var line = new List<int>();
-                for (int j = 0; j < binary.Size; j++)
-                {
-                    var variable = binary.Variables[i * binary.Size + j];
-                    int value = solutionsForwardChecking[n][variable];
-                    Console.Write($" {value} |");
-                    line.Add(value);
-                }
-                lines.Add(line);
-                Console.WriteLine();
-            }
-            Console.WriteLine($"Stored result in {fileSerializer.SaveBinaryToFile(lines, binaryInput)}");
-        }
-    }
-    Console.WriteLine();
+    LoggerService.PrintBinarySolutions(solutionsBacktracking, binary.Variables, binaryInput, binary.Size, "Backtracking");
+    LoggerService.PrintBinarySolutions(solutionsForwardChecking, binary.Variables, binaryInput, binary.Size, "Forward Checking");
 }
-
-var futoshikiInputs = new string[] { "futoshiki_4x4", "futoshiki_5x5", "futoshiki_6x6" };
 
 foreach (var input in futoshikiInputs)
 {
@@ -91,59 +38,8 @@ foreach (var input in futoshikiInputs)
     var futhosikiSolutions = futhosiki.SolveBacktracking(GetValueHeuristic(), GetVariableHeuristic(), maxSolutions);
     var futhosikiSolutions2 = futhosiki.SolveForwardChecking(GetValueHeuristic(), GetVariableHeuristic(), maxSolutions);
 
-    if (!futhosikiSolutions.Any())
-    {
-        Console.WriteLine($"No solution for problem {input} - Backtracking");
-    }
-    else
-    {
-        Console.WriteLine($"{futhosikiSolutions.Count} Solution found for problem {input} - Backtracking!");
-        for (int n = 0; n < futhosikiSolutions.Count; n++)
-        {
-            var lines = new List<List<int>>();
-            for (int i = 0; i < futhosiki.Size; i++)
-            {
-                var line = new List<int>();
-                for (int j = 0; j < futhosiki.Size; j++)
-                {
-                    var variable = futhosiki.Variables[i * futhosiki.Size + j];
-                    int value = futhosikiSolutions[n][variable];
-                    line.Add(value);
-                    Console.Write($" {value} |");
-                }
-                lines.Add(line);
-                Console.WriteLine();
-            }
-            Console.WriteLine($"Stored result in {fileSerializer.SaveFutoshikiToFile(lines, futhosiki.Inequalities, input)}");
-        }
-    }
-
-    if (!futhosikiSolutions2.Any())
-    {
-        Console.WriteLine($"No solution for problem {input} - Forward Checking");
-    }
-    else
-    {
-        Console.WriteLine($"{futhosikiSolutions2.Count} Solution found for problem {input} - Forward Checking!");
-        for (int n = 0; n < futhosikiSolutions2.Count; n++)
-        {
-            var lines = new List<List<int>>();
-            for (int i = 0; i < futhosiki.Size; i++)
-            {
-                var line = new List<int>();
-                for (int j = 0; j < futhosiki.Size; j++)
-                {
-                    var variable = futhosiki.Variables[i * futhosiki.Size + j];
-                    int value = futhosikiSolutions2[n][variable];
-                    line.Add(value);
-                    Console.Write($" {value} |");
-                }
-                lines.Add(line);
-                Console.WriteLine();
-            }
-            Console.WriteLine($"Stored result in {fileSerializer.SaveFutoshikiToFile(lines, futhosiki.Inequalities, input)}");
-        }
-    }
+    LoggerService.PrintFutoshikiSolutions(futhosikiSolutions, futhosiki.Variables, input, futhosiki.Size, "Backtracking");
+    LoggerService.PrintFutoshikiSolutions(futhosikiSolutions2, futhosiki.Variables, input, futhosiki.Size, "Forward Checking");
 }
 
 //var hardcodedValues = new List<FieldHardcodedValue> { 
