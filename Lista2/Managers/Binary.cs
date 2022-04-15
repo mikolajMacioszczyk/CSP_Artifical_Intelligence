@@ -28,9 +28,10 @@ namespace Lista2.Managers
         {
             var result = csp.Backtracking(valueHeuristic, variableHeuristic, maxSolutions);
 
-            Console.WriteLine($"Backtracking Count = {result.Item2}");
+            Console.WriteLine($"Backtracking Iterations = {result.Iterations}");
+            Console.WriteLine($"Backtracking Time = {result.TotalMiliseconds} ms");
 
-            return result.Item1;
+            return result.Solutions;
         }
 
         public List<Dictionary<Field, int>> SolveForwardChecking(IValueHeuristic<int> valueHeuristic, 
@@ -38,9 +39,10 @@ namespace Lista2.Managers
         {
             var result = csp.ForwardChecking(valueHeuristic, variableHeuristic, maxSolutions, false);
 
-            Console.WriteLine($"Forward Checking Count = {result.Item2}");
+            Console.WriteLine($"Forward Checking Count = {result.Iterations}");
+            Console.WriteLine($"Forward Checking Time = {result.TotalMiliseconds} ms");
 
-            return result.Item1;
+            return result.Solutions;
         }
 
         private void InitializeVariables()

@@ -7,11 +7,9 @@ namespace Lista2.Managers
     public class CSP<V, D>
     {
         public List<V> Variables { get; set; }
-
         public Dictionary<V, List<D>> Domains { get; set; }
         public Dictionary<V, List<Constraint<V, D>>> Constraints { get; set; }
-
-        private int counter = 0;
+        private int counter;
 
         public CSP(
             List<V> variables,
@@ -46,17 +44,20 @@ namespace Lista2.Managers
             return true;
         }
 
-        public (List<Dictionary<V, D>>, int) Backtracking(IValueHeuristic<D> valueHeuristic, 
-            IVariableHeuristic<V, D> variableHeuristic, int maxSolutions)
+        public CspSolution<V, D> Backtracking(
+            IValueHeuristic<D> valueHeuristic, 
+            IVariableHeuristic<V, D> variableHeuristic, 
+            int maxSolutions)
         {
-            counter = 0;
-            var solutions = new List<Dictionary<V, D>>();
-            Backtracking(new Dictionary<V, D>(), solutions, maxSolutions, valueHeuristic, variableHeuristic);
-            return (solutions, counter);
+            return MetricsWrapper(solutions => Backtracking(new Dictionary<V, D>(), solutions, maxSolutions, valueHeuristic, variableHeuristic));
         }
 
-        private void Backtracking(Dictionary<V, D> assignments, List<Dictionary<V, D>> solutions, 
-            int maxSolutions, IValueHeuristic<D> valueHeuristic, IVariableHeuristic<V, D> variableHeuristic)
+        private void Backtracking(
+            Dictionary<V, D> assignments, 
+            List<Dictionary<V, D>> solutions, 
+            int maxSolutions, 
+            IValueHeuristic<D> valueHeuristic, 
+            IVariableHeuristic<V, D> variableHeuristic)
         {
             if (assignments.Count == Variables.Count)
             {
@@ -88,17 +89,34 @@ namespace Lista2.Managers
             }
         }
 
-        public (List<Dictionary<V, D>>, int) ForwardChecking(IValueHeuristic<D> valueHeuristic, IVariableHeuristic<V, D> variableHeuristic,
-            int maxSolutions, bool notNeedConsistencyCheck = true)
+        public CspSolution<V, D> ForwardChecking(
+            IValueHeuristic<D> valueHeuristic, 
+            IVariableHeuristic<V, D> variableHeuristic,
+            int maxSolutions, 
+            bool notNeedConsistencyCheck = true)
+        {
+            return MetricsWrapper(solutions => ForwardChecking(new Dictionary<V, D>(), solutions, maxSolutions, valueHeuristic, variableHeuristic, notNeedConsistencyCheck));
+        }
+
+        private CspSolution<V, D> MetricsWrapper(Action<List<Dictionary<V, D>>> job)
         {
             counter = 0;
             var solutions = new List<Dictionary<V, D>>();
-            ForwardChecking(new Dictionary<V, D>(), solutions, maxSolutions, valueHeuristic, variableHeuristic, notNeedConsistencyCheck);
-            return (solutions, counter);
+            var start = DateTime.Now;
+
+            job(solutions);
+
+            var time = (DateTime.Now - start).TotalMilliseconds;
+            return new CspSolution<V, D>(solutions, counter, time);
         }
 
-        private void ForwardChecking(Dictionary<V, D> assigements, List<Dictionary<V, D>> solutions, 
-            int maxSolutions, IValueHeuristic<D> valueHeuristic, IVariableHeuristic<V, D> variableHeuristic, bool notNeedConsistencyCheck)
+        private void ForwardChecking(
+            Dictionary<V, D> assigements, 
+            List<Dictionary<V, D>> solutions, 
+            int maxSolutions, 
+            IValueHeuristic<D> valueHeuristic, 
+            IVariableHeuristic<V, D> variableHeuristic, 
+            bool notNeedConsistencyCheck)
         {
             if (assigements.Count == Variables.Count)
             {
