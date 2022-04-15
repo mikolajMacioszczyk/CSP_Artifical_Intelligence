@@ -7,7 +7,7 @@ IValueHeuristic<int> GetValueGeuristic()
 {
     return new NoHeuristic<int>();
 }
-int maxSolutions = 1;
+int maxSolutions = 2;
 
 var fileSerializer = new FileSerializer();
 var binaryInputs = new string[] { "binary_6x6", "binary_8x8", "binary_10x10" };

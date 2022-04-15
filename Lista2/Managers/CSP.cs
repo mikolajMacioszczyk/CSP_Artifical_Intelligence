@@ -109,25 +109,23 @@ namespace Lista2.Managers
                 assigements.Add(first, value);
                 valueHeuristic.Use(value);
 
-                // TODO: Consider removing this check
-                if (Consistent(first, assigements))
+                var domainsArchive = DeepCopyDomains();
+
+                // propagate
+                foreach (var constraint in Constraints[first])
                 {
-                    var domainsArchive = DeepCopyDomains();
-
-                    // propagate
-                    foreach (var constraint in Constraints[first])
-                    {
-                        constraint.Propagate(first, assigements, Domains);
-                    }
-
-                    // forward checking
-                    ForwardChecking(assigements, solutions, maxSolutions, valueHeuristic);
-                    if (solutions.Count >= maxSolutions)
-                    {
-                        return;
-                    }
-                    Domains = domainsArchive;
+                    constraint.Propagate(first, assigements, Domains);
                 }
+
+                // forward checking
+                ForwardChecking(assigements, solutions, maxSolutions, valueHeuristic);
+                if (solutions.Count >= maxSolutions)
+                {
+                    return;
+                }
+                
+                Domains = domainsArchive;
+
                 assigements.Remove(first);
                 valueHeuristic.Remove(value);
             }
