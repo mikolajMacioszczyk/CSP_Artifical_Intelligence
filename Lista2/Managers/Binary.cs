@@ -23,26 +23,16 @@ namespace Lista2.Managers
             AddConstraints();
         }
 
-        public List<Dictionary<Field, int>> SolveBacktracking(IValueHeuristic<int> valueHeuristic, 
+        public CspSolution<Field, int> SolveBacktracking(IValueHeuristic<int> valueHeuristic, 
             IVariableHeuristic<Field, int> variableHeuristic, int maxSolutions)
         {
-            var result = csp.Backtracking(valueHeuristic, variableHeuristic, maxSolutions);
-
-            Console.WriteLine($"Backtracking Iterations = {result.Iterations}");
-            Console.WriteLine($"Backtracking Time = {result.TotalMiliseconds} ms");
-
-            return result.Solutions;
+            return csp.Backtracking(valueHeuristic, variableHeuristic, maxSolutions);
         }
 
-        public List<Dictionary<Field, int>> SolveForwardChecking(IValueHeuristic<int> valueHeuristic, 
+        public CspSolution<Field, int> SolveForwardChecking(IValueHeuristic<int> valueHeuristic, 
             IVariableHeuristic<Field, int> variableHeuristic, int maxSolutions)
         {
-            var result = csp.ForwardChecking(valueHeuristic, variableHeuristic, maxSolutions, false);
-
-            Console.WriteLine($"Forward Checking Count = {result.Iterations}");
-            Console.WriteLine($"Forward Checking Time = {result.TotalMiliseconds} ms");
-
-            return result.Solutions;
+            return csp.ForwardChecking(valueHeuristic, variableHeuristic, maxSolutions, false);
         }
 
         private void InitializeVariables()

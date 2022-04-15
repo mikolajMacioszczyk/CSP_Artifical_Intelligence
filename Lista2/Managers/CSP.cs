@@ -49,7 +49,7 @@ namespace Lista2.Managers
             IVariableHeuristic<V, D> variableHeuristic, 
             int maxSolutions)
         {
-            return MetricsWrapper(solutions => Backtracking(new Dictionary<V, D>(), solutions, maxSolutions, valueHeuristic, variableHeuristic));
+            return MetricsWrapper(nameof(Backtracking), solutions => Backtracking(new Dictionary<V, D>(), solutions, maxSolutions, valueHeuristic, variableHeuristic));
         }
 
         private void Backtracking(
@@ -95,10 +95,10 @@ namespace Lista2.Managers
             int maxSolutions, 
             bool notNeedConsistencyCheck = true)
         {
-            return MetricsWrapper(solutions => ForwardChecking(new Dictionary<V, D>(), solutions, maxSolutions, valueHeuristic, variableHeuristic, notNeedConsistencyCheck));
+            return MetricsWrapper(nameof(ForwardChecking), solutions => ForwardChecking(new Dictionary<V, D>(), solutions, maxSolutions, valueHeuristic, variableHeuristic, notNeedConsistencyCheck));
         }
 
-        private CspSolution<V, D> MetricsWrapper(Action<List<Dictionary<V, D>>> job)
+        private CspSolution<V, D> MetricsWrapper(string method, Action<List<Dictionary<V, D>>> job)
         {
             counter = 0;
             var solutions = new List<Dictionary<V, D>>();
@@ -107,7 +107,7 @@ namespace Lista2.Managers
             job(solutions);
 
             var time = (DateTime.Now - start).TotalMilliseconds;
-            return new CspSolution<V, D>(solutions, counter, time);
+            return new CspSolution<V, D>(solutions, method, counter, time);
         }
 
         private void ForwardChecking(

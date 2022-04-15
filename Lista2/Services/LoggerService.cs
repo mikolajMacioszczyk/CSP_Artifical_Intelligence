@@ -5,17 +5,19 @@ namespace Lista2.Services
 {
     public class LoggerService
     {
-        public static void PrintBinarySolutions(List<Dictionary<Field, int>> solutions, List<Field> variables, 
-            string problemName, int size, string method)
+        public static void PrintBinarySolutions(CspSolution<Field, int> cspSolution, List<Field> variables, int size)
         {
-            if (!solutions.Any())
+            Console.WriteLine($"{cspSolution.Method} Iterations = {cspSolution.Iterations}");
+            Console.WriteLine($"{cspSolution.Method} Time = {cspSolution.TotalMiliseconds} ms");
+
+            if (!cspSolution.Solutions.Any())
             {
-                Console.WriteLine($"No solution for problem {problemName} - {method}");
+                Console.WriteLine($"No solution for problem {cspSolution.ProblemName} - {cspSolution.Method}");
             }
             else
             {
-                Console.WriteLine($"{solutions.Count} Solution found for problem {problemName} - {method}!");
-                for (int n = 0; n < solutions.Count; n++)
+                Console.WriteLine($"{cspSolution.Solutions.Count} Solution found for problem {cspSolution.ProblemName} - {cspSolution.Method}!");
+                for (int n = 0; n < cspSolution.Solutions.Count; n++)
                 {
                     var lines = new List<List<int>>();
                     for (int i = 0; i < size; i++)
@@ -24,7 +26,7 @@ namespace Lista2.Services
                         for (int j = 0; j < size; j++)
                         {
                             var variable = variables[i * size + j];
-                            int value = solutions[n][variable];
+                            int value = cspSolution.Solutions[n][variable];
                             Console.Write($" {value} |");
                             line.Add(value);
                         }
@@ -38,17 +40,20 @@ namespace Lista2.Services
             Console.WriteLine();
         }
 
-        public static void PrintFutoshikiSolutions(List<Dictionary<Field, int>> solutions, List<Field> variables,
-            List<InequalityConstraintModel> inequalities, string problemName, int size, string method)
+        public static void PrintFutoshikiSolutions(CspSolution<Field, int> cspSolution, List<Field> variables,
+            List<InequalityConstraintModel> inequalities, int size)
         {
-            if (!solutions.Any())
+            Console.WriteLine($"{cspSolution.Method} Iterations = {cspSolution.Iterations}");
+            Console.WriteLine($"{cspSolution.Method} Time = {cspSolution.TotalMiliseconds} ms");
+
+            if (!cspSolution.Solutions.Any())
             {
-                Console.WriteLine($"No solution for problem {problemName} - {method}");
+                Console.WriteLine($"No solution for problem {cspSolution.ProblemName} - {cspSolution.Method}");
             }
             else
             {
-                Console.WriteLine($"{solutions.Count} Solution found for problem {problemName} - {method}!");
-                for (int n = 0; n < solutions.Count; n++)
+                Console.WriteLine($"{cspSolution.Solutions.Count} Solution found for problem {cspSolution.ProblemName} - {cspSolution.Method}!");
+                for (int n = 0; n < cspSolution.Solutions.Count; n++)
                 {
                     Console.WriteLine(new string('-', size * 8));
                     var lines = new List<List<int>>();
@@ -63,7 +68,7 @@ namespace Lista2.Services
                         for (int column = 0; column < size; column++)
                         {
                             var variable = variables[row * size + column];
-                            int value = solutions[n][variable];
+                            int value = cspSolution.Solutions[n][variable];
                             line.Add(value);
                             Console.Write($" {value} |");
 
