@@ -77,7 +77,7 @@ namespace Lista2.Managers
             // rows
             for (int i = 0; i < Size; i++)
             {
-                for (int j = 0; j < Size - 3; j++)
+                for (int j = 0; j < Size - 2; j++)
                 {
                     var variable1 = Variables[i * Size + j];
                     var variable2 = Variables[i * Size + j + 1];
@@ -89,7 +89,7 @@ namespace Lista2.Managers
             // columns
             for (int column = 0; column < Size; column++)
             {
-                for (int row = 0; row < Size - 3; row++)
+                for (int row = 0; row < Size - 2; row++)
                 {
                     var variable1 = Variables[row * Size + column];
                     var variable2 = Variables[(row + 1) * Size + column];
