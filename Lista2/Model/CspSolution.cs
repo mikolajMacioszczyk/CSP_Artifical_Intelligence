@@ -7,13 +7,15 @@
         public string ProblemName { get; set; }
         public int Iterations { get; set; }
         public double TotalMiliseconds { get; set; }
+        public double MaxSolutions { get; set; }
 
-        public CspSolution(List<Dictionary<V, D>> solutions, string method, int iterations, double totalMiliseconds)
+        public CspSolution(List<Dictionary<V, D>> solutions, string method, int iterations, double totalMiliseconds, double maxSolutions)
         {
             Solutions = solutions;
             Iterations = iterations;
             TotalMiliseconds = totalMiliseconds;
             Method = method;
+            MaxSolutions = maxSolutions;
         }
     }
 }

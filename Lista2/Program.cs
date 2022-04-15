@@ -12,7 +12,9 @@ IVariableHeuristic<Field, int> GetVariableHeuristic()
 {
     return new SmallerDomainHeuristic<Field, int>();
 }
-int maxSolutions = 2;
+int minSolutions = 5;
+int maxSolutions = 8;
+
 var binaryInputs = new string[] { "binary_6x6", "binary_8x8", "binary_10x10" };
 //var binaryInputs = new string[] { };
 var futoshikiInputs = new string[] { "futoshiki_4x4", "futoshiki_5x5", "futoshiki_6x6" };
@@ -21,37 +23,47 @@ var futoshikiInputs = new string[] { "futoshiki_4x4", "futoshiki_5x5", "futoshik
 var fileSerializer = new FileSerializer();
 var solutionsWithMetrics = new List<CspSolution<Field, int>>();
 
-foreach (var binaryInput in binaryInputs)
+for (int solutionsCount = minSolutions; solutionsCount <= maxSolutions; solutionsCount++)
 {
-    var binary = fileSerializer.ReadBinary(binaryInput);
+    Console.WriteLine();
+    Console.WriteLine("===============================================");
+    Console.WriteLine($"Solutions count = {solutionsCount}");
+    Console.WriteLine();
 
-    var solutionsBacktracking = binary.SolveBacktracking(GetValueHeuristic(), GetVariableHeuristic(), maxSolutions);
-    solutionsBacktracking.ProblemName = binaryInput;
-    solutionsWithMetrics.Add(solutionsBacktracking);
+    foreach (var binaryInput in binaryInputs)
+    {
+        var binary = fileSerializer.ReadBinary(binaryInput);
 
-    var solutionsForwardChecking = binary.SolveForwardChecking(GetValueHeuristic(), GetVariableHeuristic(), maxSolutions);
-    solutionsForwardChecking.ProblemName = binaryInput;
-    solutionsWithMetrics.Add(solutionsForwardChecking);
+        var solutionsBacktracking = binary.SolveBacktracking(GetValueHeuristic(), GetVariableHeuristic(), solutionsCount);
+        solutionsBacktracking.ProblemName = binaryInput;
+        solutionsWithMetrics.Add(solutionsBacktracking);
 
-    LoggerService.PrintBinarySolutions(solutionsBacktracking, binary.Variables, binary.Size);
-    LoggerService.PrintBinarySolutions(solutionsForwardChecking, binary.Variables, binary.Size);
+        var solutionsForwardChecking = binary.SolveForwardChecking(GetValueHeuristic(), GetVariableHeuristic(), solutionsCount);
+        solutionsForwardChecking.ProblemName = binaryInput;
+        solutionsWithMetrics.Add(solutionsForwardChecking);
+
+        LoggerService.PrintBinarySolutions(solutionsBacktracking, binary.Variables, binary.Size);
+        LoggerService.PrintBinarySolutions(solutionsForwardChecking, binary.Variables, binary.Size);
+    }
+
+    foreach (var input in futoshikiInputs)
+    {
+        var futhosiki = fileSerializer.ReadFutoshiki(input);
+
+        var futoshikiSolutions = futhosiki.SolveBacktracking(GetValueHeuristic(), GetVariableHeuristic(), solutionsCount);
+        futoshikiSolutions.ProblemName = input;
+        solutionsWithMetrics.Add(futoshikiSolutions);
+
+        var futoshikiSolutions2 = futhosiki.SolveForwardChecking(GetValueHeuristic(), GetVariableHeuristic(), solutionsCount);
+        futoshikiSolutions2.ProblemName = input;
+        solutionsWithMetrics.Add(futoshikiSolutions2);
+
+        LoggerService.PrintFutoshikiSolutions(futoshikiSolutions, futhosiki.Variables, futhosiki.Inequalities, futhosiki.Size);
+        LoggerService.PrintFutoshikiSolutions(futoshikiSolutions2, futhosiki.Variables, futhosiki.Inequalities, futhosiki.Size);
+    }
 }
 
-foreach (var input in futoshikiInputs)
-{
-    var futhosiki = fileSerializer.ReadFutoshiki(input);
-
-    var futoshikiSolutions = futhosiki.SolveBacktracking(GetValueHeuristic(), GetVariableHeuristic(), maxSolutions);
-    futoshikiSolutions.ProblemName = input;
-    solutionsWithMetrics.Add(futoshikiSolutions);
-
-    var futoshikiSolutions2 = futhosiki.SolveForwardChecking(GetValueHeuristic(), GetVariableHeuristic(), maxSolutions);
-    futoshikiSolutions2.ProblemName = input;
-    solutionsWithMetrics.Add(futoshikiSolutions2);
-
-    LoggerService.PrintFutoshikiSolutions(futoshikiSolutions, futhosiki.Variables, futhosiki.Inequalities, futhosiki.Size);
-    LoggerService.PrintFutoshikiSolutions(futoshikiSolutions2, futhosiki.Variables, futhosiki.Inequalities, futhosiki.Size);
-}
+fileSerializer.SaveSolutionsToFile(solutionsWithMetrics);
 
 //var hardcodedValues = new List<FieldHardcodedValue> { 
 //    new FieldHardcodedValue { Row = 0, Column = 0, Value = 1 },

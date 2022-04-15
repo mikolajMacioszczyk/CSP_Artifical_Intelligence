@@ -212,6 +212,47 @@ namespace Lista2.Services
 
         #endregion
 
+        #region Solutions
+
+        public string SaveSolutionsToFile(List<CspSolution<Field, int>> solution)
+        {
+            string resultFileName = $"Result_{Guid.NewGuid()}";
+            var path = GetOutputFilePath(resultFileName);
+
+            var problemSolutions = solution.GroupBy(s => s.ProblemName);
+
+            var lines = new List<string>();
+
+            foreach (var problemGroup in problemSolutions)
+            {
+                lines.Add($"Solutions for problem {problemGroup.Key}");
+
+                var currentProblemSolutions = problemGroup.Select(s => s).ToList();
+
+                var methodsSolutions = currentProblemSolutions.GroupBy(s => s.Method);
+
+                lines.Add("");
+
+                foreach (var currentMethodSolution in methodsSolutions)
+                {
+                    lines.Add(currentMethodSolution.Key);
+                    lines.Add($"Max Solutions, Found Solutions, Iterations, TotalMiliseconds");
+
+                    foreach (var currentSolution in currentMethodSolution.OrderBy(s => s.MaxSolutions))
+                    {
+                        lines.Add($"{currentSolution.MaxSolutions},{currentSolution.Solutions.Count},{currentSolution.Iterations},{currentSolution.TotalMiliseconds.ToString("0.####")}");
+                    }
+                    lines.Add("");
+                }
+            }
+
+            File.WriteAllLines(path, lines);
+
+            return resultFileName;
+        }
+
+        #endregion
+
         #region Helpers
         private string GetInputFilePath(string fileName)
         {
