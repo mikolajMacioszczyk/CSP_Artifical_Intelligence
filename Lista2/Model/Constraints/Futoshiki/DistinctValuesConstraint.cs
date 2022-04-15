@@ -29,10 +29,17 @@
             int value = assigement[variable];
             if (Variables.Contains(variable))
             {
+                var newChanges = new List<(Field, List<int>)>();
                 foreach (var currentVariable in Variables.Where(v => !v.Equals(variable)))
                 {
+                    newChanges.Add((currentVariable, domains[currentVariable]));
                     domains[currentVariable] = domains[currentVariable].Where(v => v != value).ToList();
                 }
+                changes.Push((true, newChanges));
+            }
+            else
+            {
+                changes.Push((false, null));
             }
         }
     }

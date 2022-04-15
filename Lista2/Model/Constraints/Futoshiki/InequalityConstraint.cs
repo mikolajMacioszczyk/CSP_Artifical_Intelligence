@@ -47,6 +47,7 @@ namespace Lista2.Model
 
             if (Variable1.Equals(variable))
             {
+                changes.Push((true, new List<(Field, List<int>)>() { (Variable2, domains[Variable2]) }));
                 switch (InequalityOperator)
                 {
                     case InequalityOperator.GreaterThan:
@@ -67,6 +68,7 @@ namespace Lista2.Model
             }
             else if (Variable2.Equals(variable))
             {
+                changes.Push((true, new List<(Field, List<int>)>() { (Variable1, domains[Variable1]) }));
                 switch (InequalityOperator)
                 {
                     case InequalityOperator.GreaterThan:
@@ -84,6 +86,10 @@ namespace Lista2.Model
                     default:
                         throw new ArgumentException(nameof(InequalityOperator));
                 }
+            }
+            else
+            {
+                changes.Push((false, null));
             }
         }
     }

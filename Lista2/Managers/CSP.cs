@@ -98,18 +98,6 @@ namespace Lista2.Managers
             return MetricsWrapper(nameof(ForwardChecking), maxSolutions, solutions => ForwardChecking(new Dictionary<V, D>(), solutions, maxSolutions, valueHeuristic, variableHeuristic, notNeedConsistencyCheck));
         }
 
-        private CspSolution<V, D> MetricsWrapper(string method, int maxSolutions, Action<List<Dictionary<V, D>>> job)
-        {
-            counter = 0;
-            var solutions = new List<Dictionary<V, D>>();
-            var start = DateTime.Now;
-
-            job(solutions);
-
-            var time = (DateTime.Now - start).TotalMilliseconds;
-            return new CspSolution<V, D>(solutions, method, counter, time, maxSolutions);
-        }
-
         private void ForwardChecking(
             Dictionary<V, D> assigements, 
             List<Dictionary<V, D>> solutions, 
@@ -135,10 +123,9 @@ namespace Lista2.Managers
                 assigements.Add(first, value);
                 valueHeuristic.Use(value);
 
-                var domainsArchive = DeepCopyDomains();
-
+                var copy = DeepCopyDomains();
                 // propagate
-                foreach (var constraint in Constraints[first])
+                foreach (var constraint in Constraints[first].OrderBy(c => c.Index))
                 {
                     constraint.Propagate(first, assigements, Domains);
                 }
@@ -152,14 +139,30 @@ namespace Lista2.Managers
                         return;
                     }
                 }
-                
-                Domains = domainsArchive;
+
+                // restore domain
+                foreach (var constraint in Constraints[first].OrderByDescending(c => c.Index))
+                {
+                    constraint.RestoreDomain(Domains);
+                }
 
                 assigements.Remove(first);
                 valueHeuristic.Remove(value);
             }
 
             return;
+        }
+
+        private CspSolution<V, D> MetricsWrapper(string method, int maxSolutions, Action<List<Dictionary<V, D>>> job)
+        {
+            counter = 0;
+            var solutions = new List<Dictionary<V, D>>();
+            var start = DateTime.Now;
+
+            job(solutions);
+
+            var time = (DateTime.Now - start).TotalMilliseconds;
+            return new CspSolution<V, D>(solutions, method, counter, time, maxSolutions);
         }
 
         private Dictionary<V, List<D>> DeepCopyDomains()
