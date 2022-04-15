@@ -38,8 +38,8 @@ foreach (var input in futoshikiInputs)
     var futhosikiSolutions = futhosiki.SolveBacktracking(GetValueHeuristic(), GetVariableHeuristic(), maxSolutions);
     var futhosikiSolutions2 = futhosiki.SolveForwardChecking(GetValueHeuristic(), GetVariableHeuristic(), maxSolutions);
 
-    LoggerService.PrintFutoshikiSolutions(futhosikiSolutions, futhosiki.Variables, input, futhosiki.Size, "Backtracking");
-    LoggerService.PrintFutoshikiSolutions(futhosikiSolutions2, futhosiki.Variables, input, futhosiki.Size, "Forward Checking");
+    LoggerService.PrintFutoshikiSolutions(futhosikiSolutions, futhosiki.Variables, futhosiki.Inequalities, input, futhosiki.Size, "Backtracking");
+    LoggerService.PrintFutoshikiSolutions(futhosikiSolutions2, futhosiki.Variables, futhosiki.Inequalities, input, futhosiki.Size, "Forward Checking");
 }
 
 //var hardcodedValues = new List<FieldHardcodedValue> { 
